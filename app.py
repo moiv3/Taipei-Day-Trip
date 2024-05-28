@@ -56,7 +56,92 @@ async def index(request: Request):
 	return JSONResponse(output_dict)
 
 
+@app.get("/api/attractions")
+async def get_attractions_by_query_string(request: Request, page: int, keyword: str | None = None):
+	if page < 1:
+		return JSONResponse(status_code=400, content=({"error": True, "message": "頁碼不正確，請確認頁碼"}))
+	
+	output = {}
+	output["nextPage"] = page + 1
+	output["data"] = []
+	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
+	website_db_cursor = website_db.cursor()
+	if keyword:
+		cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction WHERE mrt = %s OR name LIKE %s LIMIT %s, 12"
+		website_db_cursor.execute(cmd,(keyword, "%"+keyword+"%", (page-1)*12))
+	else:
+		cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction LIMIT %s, 12"
+		website_db_cursor.execute(cmd,((page-1)*12,))
+	result = website_db_cursor.fetchall()
+
+	if result:
+		for item in result:
+			data = {}
+			data["id"] = item[0]
+			data["name"] = item[1]
+			data["category"] = item[2]
+			data["description"] = item[3]
+			data["address"] = item[4]
+			data["transport"] = item[5]
+			data["mrt"] = item[6]
+			data["lat"] = float(item[7])
+			data["lng"] = float(item[8])
+
+			cmd = "SELECT url FROM image WHERE attraction_id = %s"
+			website_db_cursor.execute(cmd,(item[0],))
+			image_result = website_db_cursor.fetchall()
+			data["images"]=[]
+			# print(data)
+			if image_result:
+				print(image_result)
+				for image_url in image_result:
+					data["images"].append(image_url[0])
+			output["data"].append(data)
+		return JSONResponse(output)
+			
+	else:
+		return JSONResponse(output)
+
+@app.get("/api/attraction/{attractionId}")
+async def get_attraction_by_id(request: Request, attractionId: int):
+	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
+	website_db_cursor = website_db.cursor()
+	cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction WHERE id = %s"
+	website_db_cursor.execute(cmd,(attractionId,))
+	result = website_db_cursor.fetchone()
+	if result:
+		# print(result)
+		data = {}
+		data["id"] = result[0]
+		data["name"] = result[1]
+		data["category"] = result[2]
+		data["description"] = result[3]
+		data["address"] = result[4]
+		data["transport"] = result[5]
+		data["mrt"] = result[6]
+		data["lat"] = float(result[7])
+		data["lng"] = float(result[8])
+		cmd = "SELECT url FROM image WHERE attraction_id = %s"
+	else:
+		return JSONResponse(status_code=400, content=({"error": True, "message": "景點編號不正確，請確認景點編號或聯繫管理員"}))
+
+	website_db_cursor.execute(cmd,(attractionId,))
+	result = website_db_cursor.fetchall()
+	if result:
+		# print(result)
+		data["images"]=[]
+		for item in result:
+			data["images"].append(item[0])
+		
+	##image part here
+	return JSONResponse({"data": data})
+
 #exception handler. check how to print custom responses?
+#TODO: This one doesn't work!
+@app.exception_handler(422)
+async def internal_exception_handler(request: Request, exc: Exception):
+	return JSONResponse(status_code=422, content=({"error": True, "message": "格式不正確，請確認輸入資訊"}))
+
 @app.exception_handler(500)
 async def internal_exception_handler(request: Request, exc: Exception):
-	return JSONResponse(status_code=500, content=({"error": True, "message": "Internal servor error, check log"}))
+	return JSONResponse(status_code=500, content=({"error": True, "message": "伺服器內部異常，請聯繫管理員確認"}))

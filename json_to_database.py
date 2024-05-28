@@ -45,11 +45,11 @@ with open(file_path,"r", encoding = "utf-8") as file:
         transport = item["direction"]
         mrt = item["MRT"]
         lat = item["latitude"]
-        lon = item["longitude"]
-        #print(name, category, description, address, transport, mrt, lat, lon)
+        lng = item["longitude"]
+        #print(name, category, description, address, transport, mrt, lat, lng)
         print(name, category)
-        cmd = "INSERT INTO attraction (name, category, description, address, transport, mrt, lat, lon) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-        website_db_cursor.execute(cmd,(name, category, description, address, transport, mrt, lat, lon))
+        cmd = "INSERT INTO attraction (name, category, description, address, transport, mrt, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+        website_db_cursor.execute(cmd,(name, category, description, address, transport, mrt, lat, lng))
         website_db.commit()
 
         #add image data
@@ -80,7 +80,7 @@ mysql> desc attraction;
 | transport   | varchar(4096) | NO   |     | NULL    |                |
 | mrt         | varchar(255)  | YES  |     | NULL    |                |
 | lat         | decimal(9,6)  | NO   |     | NULL    |                |
-| lon         | decimal(9,6)  | NO   |     | NULL    |                |
+| lng         | decimal(9,6)  | NO   |     | NULL    |                |
 +-------------+---------------+------+-----+---------+----------------+
 
 mysql> desc image;
@@ -112,7 +112,7 @@ mysql> SHOW CREATE TABLE attraction;
   `transport` varchar(4096) NOT NULL,
   `mrt` varchar(255) DEFAULT NULL,
   `lat` decimal(9,6) NOT NULL,
-  `lon` decimal(9,6) NOT NULL,
+  `lng` decimal(9,6) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
