@@ -98,7 +98,7 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 	items_per_page = 12
 	
 	if page < 1:
-		return JSONResponse(status_code=400, content=Error(error="true", message="頁碼不正確，請確認頁碼").model_dump())
+		return JSONResponse(status_code=400, content=Error(error="true", message="頁碼不正確，請確認頁碼").dict())
 	
 	#initialize output
 	output = {}
@@ -158,7 +158,7 @@ async def get_attraction_by_id(request: Request, attractionId: int):
 	
 	#not found case, return error
 	else:
-		return JSONResponse(status_code=400, content=Error(error="true", message="景點編號不正確，請確認景點編號或聯繫管理員").model_dump())
+		return JSONResponse(status_code=400, content=Error(error="true", message="景點編號不正確，請確認景點編號或聯繫管理員").dict())
 
 #API: 取得捷運站名稱列表
 @app.get("/api/mrts", summary = "取得捷運站名稱列表", response_model = Data, tags = ["MRT Station"], responses = {500:{"model":Error}})
