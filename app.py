@@ -190,8 +190,8 @@ async def get_mrts(request: Request):
 #exception handlers for 422 and 500
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: Exception):	
-	return JSONResponse(status_code=400, content=(Error(error="true", message="格式不正確，請確認輸入資訊").model_dump()))
+	return JSONResponse(status_code=400, content=(Error(error="true", message="格式不正確，請確認輸入資訊").dict()))
 
 @app.exception_handler(500)
 async def internal_server_error_handler(request: Request, exc: Exception):
-	return JSONResponse(status_code=500, content=(Error(error="true", message="伺服器內部異常，請聯繫管理員確認").model_dump()))
+	return JSONResponse(status_code=500, content=(Error(error="true", message="伺服器內部異常，請聯繫管理員確認").dict()))
