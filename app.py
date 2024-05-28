@@ -29,7 +29,7 @@ async def thankyou(request: Request):
 
 @app.get("/api/mrts")
 async def index(request: Request):
-	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
+	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database,ssl_disabled=True)
 	website_db_cursor = website_db.cursor()
 	cmd = "SELECT mrt FROM attraction"
 	website_db_cursor.execute(cmd)
