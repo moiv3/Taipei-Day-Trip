@@ -116,7 +116,6 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 		cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction LIMIT %s, %s"
 		website_db_cursor.execute(cmd,(page * items_per_page, items_per_page + 1))
 	result = website_db_cursor.fetchall()
-	print(len(result))
 	if result:
 		#如果有下一頁，把最後一個結果丟掉，如果沒有下一頁，最後一個結果就不丟掉(保留)
 		if len(result) == items_per_page + 1:
@@ -124,7 +123,6 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 			result.pop()
 		else:
 			output["nextPage"] = None
-		print(len(result))
 
 		for item in result:
 			#non-image part
