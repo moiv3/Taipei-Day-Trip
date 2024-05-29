@@ -51,7 +51,7 @@ class Attraction(BaseModel):
 	images: list[str]
 
 class AttractionQueryOut(BaseModel):
-	nextPage: int
+	nextPage: int | None
 	data: list[Attraction]
 
 class AttractionSpecifyOut(BaseModel):
@@ -90,33 +90,42 @@ async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 # End of Static Pages
 
-#API: 取得景點資料列表
+#API: 取得景點資料列表，page從0開始(如果沒有下一頁，nextPage = null)
 @app.get("/api/attractions", response_model = AttractionQueryOut, summary = "取得景點資料列表", tags = ["Attraction"],
 		 responses = {400:{"model":Error}, 500:{"model":Error}})
 async def get_attractions_by_query_string(request: Request, response: Response, page: int, keyword: str | None = None):
-	#每頁輸出個數先設定為12, 保留往後可調整之空間
+	#每頁輸出筆數依據API docs先設定為12, 保留往後可調整之空間
 	items_per_page = 12
 	
-	if page < 1:
+	if page < 0:
 		return JSONResponse(status_code=400, content=Error(error="true", message="頁碼不正確，請確認頁碼").dict())
 	
 	#initialize output
 	output = {}
-	output["nextPage"] = page + 1
 	output["data"] = []
 
 	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
 	website_db_cursor = website_db.cursor()
 
 	#SELECT FROM attraction table
+	#SELECT items_per_page + 1是希望知道有沒有下一頁，沒有的話可以傳回None(python)/null(js)
 	if keyword:
 		cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction WHERE mrt = %s OR name LIKE %s LIMIT %s, %s"
-		website_db_cursor.execute(cmd,(keyword, "%"+keyword+"%", (page-1)*items_per_page, items_per_page))
+		website_db_cursor.execute(cmd,(keyword, "%" + keyword + "%", page * items_per_page, items_per_page + 1))
 	else:
 		cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction LIMIT %s, %s"
-		website_db_cursor.execute(cmd,((page-1)*items_per_page, items_per_page))
+		website_db_cursor.execute(cmd,(page * items_per_page, items_per_page + 1))
 	result = website_db_cursor.fetchall()
+	print(len(result))
 	if result:
+		#如果有下一頁，把最後一個結果丟掉，如果沒有下一頁，最後一個結果就不丟掉(保留)
+		if len(result) == items_per_page + 1:
+			output["nextPage"] = page + 1
+			result.pop()
+		else:
+			output["nextPage"] = None
+		print(len(result))
+
 		for item in result:
 			#non-image part
 			data_without_images = insert_attraction_data_nonimage(item)
@@ -133,6 +142,7 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 
 	#not found case, return empty data array	
 	else:
+		output["nextPage"] = None
 		return output
 
 #API: 根據景點編號取得景點資料
