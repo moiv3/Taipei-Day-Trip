@@ -147,39 +147,21 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 @app.get("/api/attraction/{attractionId}", response_model = AttractionSpecifyOut, summary = "根據景點編號取得景點資料", tags = ["Attraction"],
 		 responses={400:{"model":Error}, 500:{"model":Error}})
 async def get_attraction_by_id(request: Request, attractionId: int):
+
+	# # Function to Call DB only once but at a higher memory usage
+	# from test_functions import get_attraction_by_one_db_call
+	# result = get_attraction_by_one_db_call(attractionId)
+	# if "data" in result:
+	# 	return {"data": result["data"]}
+	# elif "error" in result:
+	# 	return JSONResponse(status_code=400, content=Error(error=result["error"], message=result["message"]).dict())
+	# else:
+	# 	return JSONResponse(status_code=500, content=Error(error=result["error"], message="SOMETHING WENT WRONG").dict())
+
+	#目前的版本，上面有1 DB call版本
 	#SELECT FROM attraction table
 	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
 	website_db_cursor = website_db.cursor()
-	cmd = "SELECT attraction.id, attraction.name, attraction.category, attraction.description, attraction.address, attraction.transport, attraction.mrt, attraction.lat, attraction.lng, image.url FROM attraction LEFT JOIN image on attraction.id = image.attraction_id WHERE attraction.id = %s"
-	website_db_cursor.execute(cmd,(attractionId,))
-	result = website_db_cursor.fetchall()
-	
-	if result:
-		data = {}
-		first_line_flag = True
-		for attraction in result:	
-			if first_line_flag == True:
-				data["id"] = attraction[0]
-				data["name"] = attraction[1]
-				data["category"] = attraction[2]
-				data["description"] = attraction[3]
-				data["address"] = attraction[4]
-				data["transport"] = attraction[5]
-				data["mrt"] = attraction[6]
-				data["lat"] = float(attraction[7])
-				data["lng"] = float(attraction[8])
-				data["images"] = []
-				first_line_flag = False			
-			if attraction[9]:
-				data["images"].append(attraction[9])
-
-		print(data)
-		return {"data": data}
-	
-	#not found case, return error
-	else:
-		return JSONResponse(status_code=400, content=Error(error="true", message="景點編號不正確，請確認景點編號或聯繫管理員").dict())
-	"""
 	cmd = "SELECT id, name, category, description, address, transport, mrt, lat, lng FROM attraction WHERE id = %s"
 	website_db_cursor.execute(cmd,(attractionId,))
 	result = website_db_cursor.fetchone()
@@ -197,7 +179,7 @@ async def get_attraction_by_id(request: Request, attractionId: int):
 	#not found case, return error
 	else:
 		return JSONResponse(status_code=400, content=Error(error="true", message="景點編號不正確，請確認景點編號或聯繫管理員").dict())
-	"""
+
 #API: 取得捷運站名稱列表
 @app.get("/api/mrts", summary = "取得捷運站名稱列表", response_model = Data, tags = ["MRT Station"], responses = {500:{"model":Error}})
 async def get_mrts(request: Request):
