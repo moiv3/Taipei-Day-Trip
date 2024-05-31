@@ -186,6 +186,22 @@ async def get_mrts(request: Request):
 	#SELECT all existing MRT stations FROM attraction table
 	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
 	website_db_cursor = website_db.cursor()
+
+	# 第二次嘗試: 使用SQL抓raw data 加排序輸出
+	# SELECT COUNT(…) FROM … GROUP BY … ORDER BY COUNT(…)
+	cmd = "SELECT mrt, COUNT(id) FROM attraction GROUP BY mrt ORDER BY count(id) DESC"
+	website_db_cursor.execute(cmd)
+	result = website_db_cursor.fetchall()
+	output_list = [item[0] for item in result if item[0] is not None]
+	# # This is equal to:
+	# output_list = []
+	# for item in result:
+	# 	if item[0] is not None:
+	# 		output_list.append(item[0])print(output_list)	
+	return {"data": output_list}
+
+	"""
+	# 第一次嘗試: 使用SQL抓raw data, 使用python排序輸出
 	cmd = "SELECT mrt FROM attraction"
 	website_db_cursor.execute(cmd)
 	result = website_db_cursor.fetchall()
@@ -206,6 +222,8 @@ async def get_mrts(request: Request):
 	for item in mrt_occurence_dict_sorted.items():
 		output_list.append(item[0])
 	return {"data": output_list}
+	"""
+
 
 #exception handlers for 422 and 500
 @app.exception_handler(RequestValidationError)

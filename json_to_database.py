@@ -1,11 +1,11 @@
 import json, mysql.connector, os
 from dotenv import load_dotenv
 
-file_path = "C:/Users/brian/OneDrive/Documents/weHelp2ndPhaseTasks/data/taipei-attractions.json"
-
 load_dotenv()
 
-#database parameters [Week7: changed to environment variables]
+file_path = os.getenv("initial_json_file_path_local")
+
+# database parameters [Week7: changed to environment variables]
 db_host=os.getenv("db_host")
 db_user=os.getenv("db_user")
 db_pw=os.getenv("db_pw")
