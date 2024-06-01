@@ -224,6 +224,13 @@ async def get_mrts(request: Request):
 	return {"data": output_list}
 	"""
 
+@app.get("/test", include_in_schema=False)
+async def index(request: Request):
+	return FileResponse("./form_test/form_test.html", media_type="text/html")
+
+@app.post("/testsubmit")
+async def test_submit_form(request: Request, name: str|None = Form(None), username: str|None = Form(None), password: str|None = Form(None)):
+	return JSONResponse(content={"name": name, "username": username, "password": password})
 
 #exception handlers for 422 and 500
 @app.exception_handler(RequestValidationError)
@@ -233,3 +240,4 @@ async def validation_exception_handler(request: Request, exc: Exception):
 @app.exception_handler(500)
 async def internal_server_error_handler(request: Request, exc: Exception):
 	return JSONResponse(status_code=500, content=(Error(error="true", message="伺服器內部異常，請聯繫管理員確認").dict()))
+
