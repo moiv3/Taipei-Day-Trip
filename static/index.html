@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+  <link rel="stylesheet" href="../static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <title>台北一日遊！</title>
 </head>
+
 <body>
+
+  <div class="navbar-container">
+    <div class="navbar-list">台北一日遊</div>
+    <div class="navbar-list">預約行程</div>
+    <div class="navbar-list">註冊/登錄</div>
+  </div>
+
+  <header class = "header">
+    <div>
+      <div class="header-text-large">輕鬆享受台北一日悠閒</div>
+      <div class="header-text-small">探索每個角落，體驗城市的深度旅遊行程</div>
+      <form class="header-searchbox">
+        <input type="text" placeholder="輸入景點名稱查詢">
+        <span><button type="submit" width="60px" height="46px"><img class="search-button" src="../static/images/search_icon.png" width="30px" height="30px"></img></span></button>
+      </form>
+    </div>
+  </header>
   
+  <div class="bigboxgroup">
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
+  </div>
+
+  <div>
+    <button id="loadMore">LOAD MOAR</button>
+    <button id="createBigBox">CREAET BIG BUX</button>
+    <button id="addData">AD DATTA</button>
+  </div>
+
+  <div id="intersectionObserverObj"></div>
+  <div class="footer">COPYRIGHT &copy; 2024 台北一日遊</div>
+  <script src="../static/scripts/script_index.js"></script>
 </body>
+
 </html>

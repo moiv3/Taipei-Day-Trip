@@ -1,0 +1,118 @@
+body {
+    font-family: "Noto Sans TC", sans-serif;
+    font-weight: 600;
+}
+  
+  .navbar-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navbar-list{
+    margin: 10px;
+}
+
+.navbar-list:first-child{
+    margin-right: auto;
+    font-size: 30px;
+    font-weight: bolder;
+}
+.header{
+    background-image: url('images/welcome_image.png'); /* Specify the path to your image */ 
+    background-size: cover; /* Cover the entire header with the background image */ 
+    background-position: center; /* Position the background image in the center */ 
+    height: 200px; /* Set a height for the header */ 
+    color: white; /* Set text color to white for better visibility */ 
+    text-align: center; /* Center align text content in the header */ 
+    padding: 20px; /* Add some padding around the content */ 
+}
+
+.bigboxgroup{
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) ;
+    max-width:100%;
+    min-width: 0;
+}
+
+.attraction{
+    background-color:lightblue;
+    height: 242px;
+    min-width: 0;
+    padding: 0px;
+    margin: 0px;
+    display:flex;
+    align-items:center;    
+    overflow: hidden;
+    position: relative;
+    margin: 15px;
+    box-sizing: border-box; 
+    border:1px #E8E8E8 solid;
+    border-radius:5px;
+}
+
+.bigboximage{
+    width:100%;
+    min-width: 0;
+    height:197px;
+    position : absolute;
+    top:0;
+    object-fit: cover;
+}
+
+.text-block-1{
+    height: 40px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: absolute;
+    width:100%;
+    min-width: 0;
+    bottom: 45px;
+    text-align: center;
+    background-color: rgba(0,0,0,50%);
+    color:white;
+}
+
+.text-block-1-text{
+    margin: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-block-2{
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width:100%;
+    min-width: 0;
+    bottom:0;
+    background-color: rgb(255,255,255);
+}
+
+.text-block-2-text{
+    margin: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-block-3-text{
+    margin: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.footer{
+    display: flex;
+    height: 104px; /* Set a height for the header */ 
+    background-color: #757575;
+    color: white;
+    font-weight:700;
+    font-size:16px;
+    justify-content: center;
+    align-items: center;
+}
