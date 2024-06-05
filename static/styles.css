@@ -81,10 +81,11 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 54px;
+    padding-left: 10px;
 }
 
 .navbar-list{
-    margin: 10px;
+    margin: 0;
 }
 
 .navbar-button{
@@ -320,4 +321,36 @@ body {
     font-size:16px;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width:1200px){
+
+.main-container{
+    max-width: 600px;
+}
+
+.bigboxgroup{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+}
+
+@media screen and (max-width:600px){
+
+.search-bar {
+    width: 230px;
+}
+
+.attraction-search-form{
+    width: 290px;
+}
+
+.main-container{
+    max-width: 300px;
+}
+
+.bigboxgroup{
+    grid-template-columns: minmax(0, 1fr);
+}
+
 }
