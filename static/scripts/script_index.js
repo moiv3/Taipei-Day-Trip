@@ -4,6 +4,7 @@ let keyword_document = null;
 let initial_json;
 let current_page = 0;
 const attractions_per_load = 12;
+let items_in_response;
 
 async function fetchNewAttractions(page_input, keyword_input = null){
     current_page = page_input;
@@ -13,18 +14,22 @@ async function fetchNewAttractions(page_input, keyword_input = null){
         params.append('keyword', keyword_input)
     }
     let url = "api/attractions?" + params;
-    console.log(params);
-    console.log(url);
+    console.log(`Params: ${params}`);
+    console.log(`Fetching url: ${url}`);
     const response = await fetch(url);
     const response_json = await response.json();
+    console.log("Fetch response:");
     console.log(response_json);
     nextPage = response_json.nextPage;
-    console.log(nextPage);
+    console.log(`nextPage no. from local: ${nextPage}`);
+    items_in_response = response_json.data.length;
+    console.log(`Items in response: ${items_in_response}`);
+    initial_json = response_json;
     return response_json;
 }
 
 function createBigBox(){
-    for (let box=0;box<(attractions_per_load);box++){
+    for (let box=0;box<(items_in_response);box++){
         const bigBoxGroup = document.querySelector(".bigboxgroup");
         const newBox = document.createElement("div");
         newBox.className = "attraction";
@@ -64,20 +69,7 @@ async function addData(){
     console.log("current page:");
     console.log(current_page);
 
-    /*
-    const response = await fetch("api/attractions?page=0");
-    const response_json = await response.json();
-    console.log(response_json.nextPage);
-    nextPage = response_json.nextPage;
-    console.log(nextPage);
-    if (nextPage){
-        document.querySelector('#loadMore').style.display='block';
-    }
-    else{
-        document.querySelector('#loadMore').style.display='none';
-    }
-    */
-    for (let box=0;box<(attractions_per_load);box++){
+    for (let box=0;box<(items_in_response);box++){
         //render text
         let box_no = current_page * attractions_per_load + box;
 
@@ -104,43 +96,20 @@ async function addData(){
 async function fetchInitialAttractions(){
     const response = await fetch("api/attractions?page=0");
     const response_json = await response.json();
-    console.log(response_json.nextPage);
+    console.log(`nextPage no. from response: ${response_json.nextPage}`);
     nextPage = response_json.nextPage;
-    console.log(nextPage);
-    if (nextPage){
-        document.querySelector('#loadMore').style.display='block';
-    }
-    else{
-        document.querySelector('#loadMore').style.display='none';
-    }
-
-    for (let i=0;i<(bigBoxQty);i++){
-        //render text
-        let block1Text = document.querySelectorAll(".text-block-1-text")[i];
-        let block1TextNode = document.createTextNode(`${response_json.data[i].name}`);
-        block1Text.appendChild(block1TextNode);
-
-        let block2Text = document.querySelectorAll(".text-block-2-text")[i];
-        let block2TextNode = document.createTextNode(`${response_json.data[i].mrt}`);
-        block2Text.appendChild(block2TextNode);
-
-        let block3Text = document.querySelectorAll(".text-block-3-text")[i];
-        let block3TextNode = document.createTextNode(`${response_json.data[i].category}`);
-        block3Text.appendChild(block3TextNode);
-        
-        //render images
-        let block1Img = document.querySelectorAll(".bigboximage")[i];
-        const block1imgURL = response_json.data[i].images[0];
-        block1Img.src = block1imgURL;
-    }
-
+    console.log(`nextPage no. from local: ${nextPage}`);
+    items_in_response = response_json.data.length;
+    console.log(`Items in response: ${items_in_response}`);
     console.log(response_json);
     return response_json;
 };
 
 async function initializeJSON(){
-    initial_json = await fetchInitialAttractions();
+    await fetchNewAttractions(page_input = 0, keyword_input = null);
+    // initial_json = await fetchInitialAttractions();
     console.log(initial_json);
+    addData();
     return initial_json;
 }
 
@@ -159,41 +128,97 @@ async function loadMoreDataAndAddToDOM(){
         return;
     }
     else {
-    await loadMoreData();
+    await fetchNewAttractions(page_input = nextPage, keyword_input = keyword_document);
     await createBigBox();
     await addData();
     }
-    // await Check();
 }
 
+function clearAllBigBoxes(){  
+    const attractions_on_screen = document.querySelectorAll(".attraction") 
+    for (attraction of attractions_on_screen){
+        attraction.remove();
+    }
+    return;
+}
 
-initializeJSON();
-
-// document.querySelector('#loadMore').addEventListener('click', loadMoreDataAndAddToDOM);
-// document.querySelector('#createBigBox').addEventListener('click', createBigBox);
-// document.querySelector('#addData').addEventListener('click', addData);
-
-let options = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0,
-    delay:2000
-  };
-let callback = ((entries) =>{
-    entries.forEach(entry => {
-        if (entry.isIntersecting){
-            console.log(entry);
-            loadMoreDataAndAddToDOM();
-            //observer.observe(target);
-        }
+function initializeObserver(){
+    let options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0,
+        delay:1000
+    };
+    let callback = ((entries) =>{
+        entries.forEach(entry => {
+            if (entry.isIntersecting){
+                console.log(entry);
+                loadMoreDataAndAddToDOM();
+            }
+        })
     })
+
+    let observer = new IntersectionObserver(callback, options);
+    let target = document.querySelector("#intersectionObserverObj");
+    observer.observe(target);
+}
+
+const attraction_search_form = document.querySelector("#attraction_search_form");
+attraction_search_form.addEventListener("submit", function (event){
+    event.preventDefault();
+    keyword_document = document.querySelector("#attraction_search_query").value;
+    searchAttraction(keyword_document);
 })
-    // loadMoreDataAndAddToDOM());
-let observer = new IntersectionObserver(callback, options);
 
-// let attraction_array = document.querySelectorAll(".attraction");
-// let target = document.querySelectorAll(".attraction")[attraction_array.length-1];
+async function searchAttraction(keyword){
+    // keyword_document = document.querySelector("#attraction_search_query").value;
+    await fetchNewAttractions(page_input = 0, keyword_input = keyword);
+    clearAllBigBoxes();
+    await createBigBox();
+    await addData();
+}
 
-let target = document.querySelector("#intersectionObserverObj");
-observer.observe(target);
+// 初始化
+initializeJSON();
+initializeObserver();
+initializeHorizontalScroll();
 
+//橫向卷軸功能與初始化
+async function initializeHorizontalScroll(){
+    const response = await fetch("api/mrts");
+    const response_json = await response.json();
+    mrt_stations = response_json.data.length;
+    console.log(response_json);
+    console.log(mrt_stations);
+
+    for (let mrt_no=0;mrt_no<(mrt_stations);mrt_no++){
+    const horizontalScrollBar = document.querySelector(".horizontal-scroll-bar");
+    const newSpan = document.createElement("span");
+    newSpan.className = "mrt-item body";
+    newSpan.textContent = response_json.data[mrt_no];
+
+    horizontalScrollBar.appendChild(newSpan);
+    }
+
+    const horizontal_scrollbar_left = document.querySelector("#scroll-left");
+    horizontal_scrollbar_left.addEventListener("click", function (event){
+        document.querySelector(".horizontal-scroll-bar").scrollLeft -= 200;
+        console.log("Scrolled left!");
+    })
+
+    const horizontal_scrollbar_right = document.querySelector("#scroll-right");
+    horizontal_scrollbar_right.addEventListener("click", function (event){
+        document.querySelector(".horizontal-scroll-bar").scrollLeft += 200;
+        console.log("Scrolled right!");
+    })
+
+    const mrt_items = document.querySelectorAll(".horizontal-scroll-bar > .mrt-item");
+    for (mrt_station of mrt_items){
+        mrt_station.addEventListener("click",function(event){
+            console.log(this.textContent); // this的力量
+            keyword_document = this.textContent;
+            document.querySelector("#attraction_search_query").value = this.textContent;
+            searchAttraction(keyword_document);
+        })
+    }
+}

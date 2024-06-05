@@ -12,24 +12,44 @@
 </head>
 
 <body>
-
+  <div class="navbar-background">
   <div class="navbar-container">
-    <div class="navbar-list">台北一日遊</div>
-    <div class="navbar-list">預約行程</div>
-    <div class="navbar-list">註冊/登錄</div>
-  </div>
-
-  <header class = "header">
+    <div class="navbar-list primary-color header-2">台北一日遊</div>
     <div>
-      <div class="header-text-large">輕鬆享受台北一日悠閒</div>
-      <div class="header-text-small">探索每個角落，體驗城市的深度旅遊行程</div>
-      <form class="header-searchbox">
-        <input type="text" placeholder="輸入景點名稱查詢">
-        <span><button type="submit" width="60px" height="46px"><img class="search-button" src="../static/images/search_icon.png" width="30px" height="30px"></img></span></button>
-      </form>
+    <button class="navbar-button secondary-color body">預定行程</button>
+    <button class="navbar-button secondary-color body">登入/註冊</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+  <header class="header">
+    <div class="header-container">
+    <div class="header-text-box">
+      <div class="header-text header-1 gray-10">輕鬆享受台北一日悠閒</div>
+      <div class="header-text body gray-10">探索每個角落，體驗城市的深度旅遊行程</div>
+      <div class="header-text">
+        <form id="attraction_search_form" class="attraction-search-form">
+          <div class="header-search-box">
+            <input class="search-bar body bold" type="text" placeholder="輸入景點名稱查詢" id="attraction_search_query">
+            <button class="search-button" type="submit" width="60px" height="46px"></button>
+        </form>
+      </div>
+      </div>
+      </div>
     </div>
   </header>
-  
+
+  <div class = "main-container">
+
+  <div class="horizontal-scroll-container">
+  <button class="horizontal-scroll-btn" id="scroll-left"><img src=static/images/button_left_hovered.png></button>
+  <div class="horizontal-scroll-bar">
+  </div>
+  <button class="horizontal-scroll-btn" id="scroll-right"><img src=static/images/button_right_hovered.png></button>
+  </div>
+
   <div class="bigboxgroup">
   <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
   <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
@@ -45,10 +65,6 @@
   <div class="attraction"><img src="" class="bigboximage"><div class="text-block-1"><div class="text-block-1-text"></div></div><div class="text-block-2"><div class="text-block-2-text"></div><div class="text-block-3-text"></div></div></div>
   </div>
 
-  <div>
-    <button id="loadMore">LOAD MOAR</button>
-    <button id="createBigBox">CREAET BIG BUX</button>
-    <button id="addData">AD DATTA</button>
   </div>
 
   <div id="intersectionObserverObj"></div>
