@@ -147,7 +147,7 @@ function initializeObserver(){
         root: null,
         rootMargin: "0px",
         threshold: 0,
-        delay:1000
+        delay:500
     };
     let callback = ((entries) =>{
         entries.forEach(entry => {
@@ -177,11 +177,6 @@ async function searchAttraction(keyword){
     await createBigBox();
     await addData();
 }
-
-// 初始化
-initializeJSON();
-initializeObserver();
-initializeHorizontalScroll();
 
 //橫向卷軸功能與初始化
 async function initializeHorizontalScroll(){
@@ -222,3 +217,8 @@ async function initializeHorizontalScroll(){
         })
     }
 }
+
+// 初始化
+initializeJSON();
+initializeHorizontalScroll();
+initializeObserver();
