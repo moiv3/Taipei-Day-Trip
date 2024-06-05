@@ -62,6 +62,11 @@ body {
     color:#F8F8F8;
 }
 
+.text-shadow-30{
+    box-shadow: 0px 0px 30px 0px #AABBCC;
+}
+
+
 /* header(101背景圖)區域 20240605 */
 /* 如何固定不破版? */
 .navbar-background{
@@ -104,7 +109,7 @@ body {
 .header{
     background-image: url('images/welcome_image.png'); /* Specify the path to your image */ 
     background-size: cover; /* Cover the entire header with the background image */ 
-    background-position: center; /* Position the background image in the center */ 
+    background-position: top left; /* Position the background image in the center */ 
     height: 320px;
     position: relative;
     margin-top: 54px; /* Add a top margin to match the navbar height */
@@ -241,7 +246,6 @@ body {
 
 /* 景點盒子區域 */
 .attraction{
-    background-color:lightblue;
     height: 242px;
     min-width: 0;
     padding: 0px;
@@ -266,6 +270,7 @@ body {
 }
 
 .text-block-1{
+    box-sizing: border-box; 
     height: 40px;
     display: flex;
     justify-content: left;
@@ -275,8 +280,9 @@ body {
     min-width: 0;
     bottom: 45px;
     text-align: center;
-    background-color: rgba(0,0,0,50%);
-    color:white;
+    background-color: rgba(0,0,0,60%);
+    
+    padding: 10px;
 }
 
 .text-block-1-text{
@@ -284,9 +290,12 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color:white;
+    font-weight: 700;
 }
 
 .text-block-2{
+    box-sizing: border-box; 
     height: 45px;
     display: flex;
     justify-content: space-between;
@@ -296,6 +305,7 @@ body {
     min-width: 0;
     bottom:0;
     background-color: rgb(255,255,255);
+    padding: 10px;    
 }
 
 .text-block-2-text{
@@ -303,6 +313,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: 400;
+    color: #757575;
 }
 
 .text-block-3-text{
@@ -310,6 +322,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: 400;
+    color: #757575;
 }
 
 .footer{
@@ -326,7 +340,15 @@ body {
 @media screen and (max-width:1200px){
 
 .main-container{
-    max-width: 600px;
+    max-width: 704px;
+}
+
+.attraction{
+    height: 280px;
+}
+
+.bigboximage {
+    height: 240px;
 }
 
 .bigboxgroup{
@@ -335,18 +357,18 @@ body {
 
 }
 
-@media screen and (max-width:600px){
+@media screen and (max-width:750px){
 
 .search-bar {
-    width: 230px;
+    width: 225px;
 }
 
 .attraction-search-form{
-    width: 290px;
+    width: 285px;
 }
 
 .main-container{
-    max-width: 300px;
+    max-width: 352px;
 }
 
 .bigboxgroup{
