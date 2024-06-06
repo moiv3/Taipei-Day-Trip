@@ -401,6 +401,7 @@ input {
     border-bottom-right-radius: 0;
 }
 
+/* 搜尋框瀏覽器會自定義font, 為了達成與設計稿一致的字型，直接定義之。 (i: means case-insensitive) */
 input[type="text" i] {
     font-family: "Noto Sans TC", sans-serif;
 }
