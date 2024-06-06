@@ -44,7 +44,7 @@ function createBigBox(){
         const newTextBlock1 = document.createElement("div");
         newTextBlock1.className = "text-block-1";
         const newTextBlock1Text = document.createElement("div");
-        newTextBlock1Text.className = "text-block-1-text";
+        newTextBlock1Text.className = "text-block-1-text white bold";
         newTextBlock1Text.textContent = "";
         newTextBlock1.appendChild(newTextBlock1Text);
         newBox.appendChild(newTextBlock1);
@@ -52,11 +52,11 @@ function createBigBox(){
         const newTextBlock2 = document.createElement("div");
         newTextBlock2.className = "text-block-2";
         const newTextBlock2Text = document.createElement("div");
-        newTextBlock2Text.className = "text-block-2-text";
+        newTextBlock2Text.className = "text-block-2-text body gray-50";
         newTextBlock2Text.textContent = "";
         newTextBlock2.appendChild(newTextBlock2Text);
         const newTextBlock3Text = document.createElement("div");
-        newTextBlock3Text.className = "text-block-3-text";
+        newTextBlock3Text.className = "text-block-3-text body gray-50";
         newTextBlock3Text.textContent = "";
         newTextBlock2.appendChild(newTextBlock3Text);
         newBox.appendChild(newTextBlock2);
