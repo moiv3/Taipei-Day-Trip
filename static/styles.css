@@ -400,3 +400,7 @@ input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+
+input[type="text" i] {
+    font-family: "Noto Sans TC", sans-serif;
+}
