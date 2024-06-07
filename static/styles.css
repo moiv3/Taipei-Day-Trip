@@ -1,0 +1,410 @@
+/* Override browser default 8px margin, define font family */
+body {
+    margin:0;
+    padding:0;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+/* 字體大小區域 */
+.header-1 {
+    font-size: 28px; 
+    font-weight: bold;
+    line-height: 24px;
+}
+  
+.header-2 {
+    font-size: 30px; 
+    font-weight: bold;
+    line-height: 34px;
+}
+
+.header-3 {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 24px;
+}
+
+.btn {
+    font-size: 19px;
+    font-weight: normal;
+    line-height: 16px;
+}
+
+.content {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: auto;
+}
+
+.body {
+    font-size: 16px;
+    font-weight: 500; /*medium = 500*/
+    line-height: 13.3px;
+}
+
+.list {
+    font-size: 14px; 
+    font-weight: 500;
+    line-height: auto;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+/* 字體顏色區域 */
+.primary-color{
+    color:#448899;
+}
+
+.secondary-color{
+    color:#666666;
+}
+
+.cyan-70{
+    color:#448899;
+}
+
+.cyan-50{
+    color:#66AABB;
+}
+
+.cyan-20{
+    color:#AADDEE;
+}
+
+.gray-70{
+    color:#666666;
+}
+
+.gray-50{
+    color:#757575;
+}
+
+.gray-20{
+    color:#E8E8E8;
+}
+
+.gray-10{
+    color:#F8F8F8;
+}
+
+.white{
+    color:white;
+}
+
+.text-shadow-30{
+    box-shadow: 0px 0px 30px 0px #AABBCC;
+}
+
+/* header(101背景圖)區域 20240605 */
+
+/* navbar凍結至整個可視範圍（畫面）的最上方 */
+.navbar-background{
+    width: 100%;
+    background: white;    
+    position: fixed;
+    top: 0;    
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.navbar-container{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 54px;
+    padding-left: 10px;
+}
+
+.navbar-title{
+    margin: 0;
+}
+
+.navbar-button{
+    border: none;
+    background: none;
+    padding: 10px;
+    font-family: "Noto Sans TC", sans-serif; /* override button的預設設定 */
+}
+
+/* header(101背景圖)區域 20240605 */
+.header{
+    background-image: url('images/welcome_image.png');
+    background-size: cover;
+    background-position: top left;
+    height: 320px;
+    position: relative;
+    margin-top: 54px;
+}
+
+.header-container{
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px;
+}
+
+.header-text-box{
+    max-width: 1200px;
+    margin: auto;     
+    text-align: left;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.header-text{
+    max-width: 1200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.attraction-search-form{
+    display: inline-block;
+    position: relative;
+    width: 460px;
+}
+
+.header-search-box{
+    margin: 0;     
+    text-align: left;
+}
+
+.header-search-box::placeholder{
+    padding:15px;
+}
+
+.search-bar{
+    box-sizing: border-box;
+    width: 400px;
+    height: 46px;
+    border: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 15px 0px 15px 15px;
+}
+
+.search-button{
+    width: 60px;
+    height: 46px;
+    background-color: #448899;
+    border: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url("../static/images/search_icon.png");
+    background-size: 30px 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 主文區域 20240603 */
+.main-container{
+    /*有RWD設定，參見最下方*/
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 0px 40px 0px;
+}
+
+.bigboxgroup{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) ;
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* 橫向scroll bar區域 20240604 */
+.horizontal-scroll-container{
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.horizontal-scroll-btn {
+    border: none;
+    background: none;
+    opacity: 50%;
+}
+
+.horizontal-scroll-btn:hover {
+    opacity: 100%;
+}
+
+.horizontal-scroll-bar{
+    box-sizing: border-box; 
+    height: 50px;
+    padding: 13px 10px 13px 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: center;
+    overflow-x: scroll;
+}
+
+/* 隱藏卷軸用 */
+.horizontal-scroll-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.mrt-item{
+    padding: 5px 15px 5px 15px;
+    gap: 4px;
+    color:#666666;
+    cursor: default;
+}
+
+.mrt-item:hover{
+    color:#000000;
+}
+
+#scroll-left{
+    padding: 9px 0px 9px 15px;
+}
+
+#scroll-right{
+    padding: 9px 15px 9px 0px;
+}
+
+/* 景點盒子區域 */
+.attraction{
+    height: 242px; /* RWD below */
+    min-width: 0;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;    
+    overflow: hidden;
+    position: relative;
+    margin: 15px;
+    box-sizing: border-box; 
+    border: 1px #E8E8E8 solid;
+    border-radius: 5px;
+}
+
+.bigboximage{
+    width: 100%;
+    min-width: 0;
+    height: 197px; /* RWD below */
+    position: absolute;
+    top: 0;
+    object-fit: cover;
+}
+
+.text-block-1{
+    box-sizing: border-box; 
+    height: 40px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    min-width: 0;
+    bottom: 45px;
+    text-align: center;
+    background-color: rgba(0,0,0,60%);
+    padding: 10px;
+}
+
+.text-block-1-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+.text-block-2{
+    box-sizing: border-box;
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    min-width: 0;
+    bottom:0;
+    background-color: rgb(255,255,255);
+    padding: 10px;
+}
+
+.text-block-2-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+.text-block-3-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+/* footer區域 */
+.footer{
+    height: 104px;
+    background-color: #757575;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* RWD使用 */
+@media screen and (max-width:1200px){
+.main-container{
+    /*720?360?*/
+    max-width: 704px;
+}
+
+.attraction{
+    height: 280px;
+}
+
+.bigboximage {
+    height: 240px;
+}
+
+.bigboxgroup{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+}
+
+@media screen and (max-width:750px){
+.search-bar {
+    width: 230px;
+    box-shadow: 0px 0px 20px 0px #AABBCC;
+}
+
+.attraction-search-form{
+    width: 285px;
+}
+
+.main-container{
+    max-width: 352px;
+}
+
+.bigboxgroup{
+    grid-template-columns: minmax(0, 1fr);
+}
+}
+
+/* 其他狀況區域 */
+/* iOS+Chrome/iOS+Safari有個詭異的行為，會預設input form四周都有圓角(約5px radius)，Windows+Chrome則不會。
+研究了許久，加這兩行可以把上述圓角強制處理掉。但不知其必要性。先留著，如果之後有衍生其他layout問題再修正。 */
+input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* 搜尋框瀏覽器會自定義font, 為了達成與設計稿一致的字型，直接定義之。 (i: means case-insensitive) */
+input[type="text" i] {
+    font-family: "Noto Sans TC", sans-serif;
+}

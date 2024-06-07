@@ -1,6 +1,7 @@
 from fastapi import *
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from pydantic import BaseModel
 import mysql.connector, os
@@ -74,6 +75,9 @@ tags_metadata = [
 ]
 
 app=FastAPI()
+
+# Static Files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
