@@ -1,11 +1,11 @@
 import json, mysql.connector, os
 from dotenv import load_dotenv
 
-file_path = "C:/Users/brian/OneDrive/Documents/weHelp2ndPhaseTasks/data/taipei-attractions.json"
-
 load_dotenv()
 
-#database parameters [Week7: changed to environment variables]
+file_path = os.getenv("initial_json_file_path_local")
+
+# database parameters [Week7: changed to environment variables]
 db_host=os.getenv("db_host")
 db_user=os.getenv("db_user")
 db_pw=os.getenv("db_pw")
@@ -48,7 +48,7 @@ with open(file_path,"r", encoding = "utf-8") as file:
         lng = item["longitude"]
         #print(name, category, description, address, transport, mrt, lat, lng)
         print(name, category)
-        cmd = "INSERT INTO attraction (name, category, description, address, transport, mrt, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+        cmd = "INSERT IGNORE INTO attraction (name, category, description, address, transport, mrt, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
         website_db_cursor.execute(cmd,(name, category, description, address, transport, mrt, lat, lng))
         website_db.commit()
 
@@ -61,7 +61,7 @@ with open(file_path,"r", encoding = "utf-8") as file:
         img_list = split_string_and_add_delimiter_only_pics(item["file"],"http")
         for img_no in range(len(img_list)):
             print(attraction_id, img_no, img_list[img_no])
-            cmd = "INSERT INTO image (attraction_id, image_no_of_attraction, url) VALUES (%s, %s, %s);"
+            cmd = "INSERT IGNORE INTO image (attraction_id, image_no_of_attraction, url) VALUES (%s, %s, %s);"
             website_db_cursor.execute(cmd,(attraction_id, img_no, img_list[img_no]))
             website_db.commit()
 
@@ -135,5 +135,80 @@ mysql> SHOW CREATE TABLE image;
   CONSTRAINT `image_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `attraction` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+"""
+
+# Edited May 30 2024 for adding UNIQUE keys and using INSERT IGNORE to insert instead of INSERT:
+
+"""
+mysql> desc attraction;
++-------------+---------------+------+-----+---------+----------------+
+| Field       | Type          | Null | Key | Default | Extra          |
++-------------+---------------+------+-----+---------+----------------+
+| id          | int           | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(255)  | NO   | UNI | NULL    |                |
+| category    | varchar(255)  | NO   |     | NULL    |                |
+| description | varchar(4096) | NO   |     | NULL    |                |
+| address     | varchar(255)  | NO   |     | NULL    |                |
+| transport   | varchar(4096) | NO   |     | NULL    |                |
+| mrt         | varchar(255)  | YES  |     | NULL    |                |
+| lat         | decimal(9,6)  | NO   |     | NULL    |                |
+| lng         | decimal(9,6)  | NO   |     | NULL    |                |
++-------------+---------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE attraction;
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table      | Create Table
+
+
+
+             |
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| attraction | CREATE TABLE `attraction` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `category` varchar(255) NOT NULL,
+  `description` varchar(4096) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `transport` varchar(4096) NOT NULL,
+  `mrt` varchar(255) DEFAULT NULL,
+  `lat` decimal(9,6) NOT NULL,
+  `lng` decimal(9,6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> desc image;
++------------------------+--------------+------+-----+---------+----------------+
+| Field                  | Type         | Null | Key | Default | Extra          |
++------------------------+--------------+------+-----+---------+----------------+
+| id                     | int          | NO   | PRI | NULL    | auto_increment |
+| attraction_id          | int          | NO   | MUL | NULL    |                |
+| image_no_of_attraction | int          | NO   |     | NULL    |                |
+| url                    | varchar(255) | NO   | UNI | NULL    |                |
++------------------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> SHOW CREATE TABLE image;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table
+
+
+                                                                               |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| image | CREATE TABLE `image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `attraction_id` int NOT NULL,
+  `image_no_of_attraction` int NOT NULL,
+  `url` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `url` (`url`),
+  KEY `attraction_id` (`attraction_id`),
+  CONSTRAINT `image_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `attraction` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 """

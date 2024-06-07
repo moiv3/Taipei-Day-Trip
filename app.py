@@ -1,6 +1,7 @@
 from fastapi import *
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from pydantic import BaseModel
 import mysql.connector, os
@@ -75,6 +76,9 @@ tags_metadata = [
 
 app=FastAPI()
 
+# Static Files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
 async def index(request: Request):
@@ -147,6 +151,18 @@ async def get_attractions_by_query_string(request: Request, response: Response, 
 @app.get("/api/attraction/{attractionId}", response_model = AttractionSpecifyOut, summary = "根據景點編號取得景點資料", tags = ["Attraction"],
 		 responses={400:{"model":Error}, 500:{"model":Error}})
 async def get_attraction_by_id(request: Request, attractionId: int):
+
+	# # Function to Call DB only once but at a higher memory usage
+	# from test_functions import get_attraction_by_one_db_call
+	# result = get_attraction_by_one_db_call(attractionId)
+	# if "data" in result:
+	# 	return {"data": result["data"]}
+	# elif "error" in result:
+	# 	return JSONResponse(status_code=400, content=Error(error=result["error"], message=result["message"]).dict())
+	# else:
+	# 	return JSONResponse(status_code=500, content=Error(error=result["error"], message="SOMETHING WENT WRONG").dict())
+
+	#目前的版本，上面有1 DB call版本
 	#SELECT FROM attraction table
 	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
 	website_db_cursor = website_db.cursor()
@@ -174,6 +190,22 @@ async def get_mrts(request: Request):
 	#SELECT all existing MRT stations FROM attraction table
 	website_db = mysql.connector.connect(host=db_host,user=db_user,password=db_pw,database=db_database)
 	website_db_cursor = website_db.cursor()
+
+	# 第二次嘗試: 使用SQL抓raw data 加排序輸出
+	# SELECT COUNT(…) FROM … GROUP BY … ORDER BY COUNT(…)
+	cmd = "SELECT mrt, COUNT(id) FROM attraction GROUP BY mrt ORDER BY count(id) DESC"
+	website_db_cursor.execute(cmd)
+	result = website_db_cursor.fetchall()
+	output_list = [item[0] for item in result if item[0] is not None]
+	# # This is equal to:
+	# output_list = []
+	# for item in result:
+	# 	if item[0] is not None:
+	# 		output_list.append(item[0])print(output_list)	
+	return {"data": output_list}
+
+	"""
+	# 第一次嘗試: 使用SQL抓raw data, 使用python排序輸出
 	cmd = "SELECT mrt FROM attraction"
 	website_db_cursor.execute(cmd)
 	result = website_db_cursor.fetchall()
@@ -194,6 +226,8 @@ async def get_mrts(request: Request):
 	for item in mrt_occurence_dict_sorted.items():
 		output_list.append(item[0])
 	return {"data": output_list}
+	"""
+
 
 #exception handlers for 422 and 500
 @app.exception_handler(RequestValidationError)
