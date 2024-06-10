@@ -248,7 +248,7 @@ body {
     overflow-x: scroll;
 }
 
-/* 隱藏卷軸用 */
+/* 隱藏捲軸用 */
 .horizontal-scroll-bar::-webkit-scrollbar {
     display: none;
 }
@@ -347,6 +347,75 @@ body {
     padding: 10px 0;
 }
 
+/* attraction頁面 */
+.picture-booking-container{    
+    border: 1px red solid;
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:center;
+}
+
+.picture{
+    border: 1px red solid;
+    width: 50%;
+}
+
+.booking{
+    border: 1px red solid;
+    width: 50%;
+}
+
+.booking > * { /* select child elements (僅一階)*/
+margin: 10px;
+}
+
+.text-block-6{
+    border: 1px red solid;
+}
+
+.text-block-7{
+    border: 1px red solid;
+}
+
+.text-block-8{
+    border: 1px red solid;
+}
+
+.choose-order-form{
+    border: 1px red solid;
+    border-radius: 5px;
+    background-color: #E8E8E8;
+}
+
+.choose-order-form > * { /* select child elements (僅一階)*/
+    margin: 10px;
+    }
+
+.booking-button{
+    background-color: #448899;
+    padding: 10px 20px 10px 20px;
+    border: 0;
+    border-radius: 5px;
+}
+
+.attraction-content{
+    border: 1px red solid;
+    padding: 10px;
+}
+
+.attraction-content-title {
+    margin: 16px 0 16px 0;
+}
+
+/* attraction-slideshow */
+.next{
+    right:0;
+}
+
+.slides-picture{
+    display: none;
+}
+
 /* footer區域 */
 .footer{
     height: 104px;
@@ -360,7 +429,6 @@ body {
 /* RWD使用 */
 @media screen and (max-width:1200px){
 .main-container{
-    /*720?360?*/
     max-width: 704px;
 }
 
