@@ -33,6 +33,9 @@ async function fetchNewAttractions(page_input, keyword_input = null){
 function createBigBox(){
     for (let box=0;box<(items_in_response);box++){
         const bigBoxGroup = document.querySelector(".bigboxgroup");
+        // const newAnchor = document.createElement("a");
+        // newAnchor.className = "attraction-anchor";
+        
         const newBox = document.createElement("div");
         newBox.className = "attraction";
         
@@ -61,7 +64,11 @@ function createBigBox(){
         newTextBlock2.appendChild(newTextBlock3Text);
         newBox.appendChild(newTextBlock2);
 
-        bigBoxGroup.appendChild(newBox);
+        const newAnchor = document.createElement("a");
+        newAnchor.className = "attraction-anchor"
+        newAnchor.appendChild(newBox);
+
+        bigBoxGroup.appendChild(newAnchor);
     }
 }
 
@@ -97,6 +104,9 @@ function addAttractionData(){
         let block1Img = document.querySelectorAll(".bigboximage")[box_no];
         const block1imgURL = initial_json.data[box].images[0];
         block1Img.src = block1imgURL;
+
+        let attractionAnchor = document.querySelectorAll(".attraction-anchor")[box_no];
+        attractionAnchor.setAttribute('href', `attraction/${initial_json.data[box].id}`);
     }
 
     console.log("Added data to DOM.");
@@ -159,7 +169,7 @@ function initializeObserver(){
         root: null,
         rootMargin: "0px",
         threshold: 0,
-        delay:500
+        delay: 500
     };
     let callback = ((entries) =>{
         entries.forEach(entry => {

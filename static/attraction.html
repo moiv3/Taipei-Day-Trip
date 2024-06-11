@@ -12,7 +12,7 @@
 <body>
     <div class="navbar-background">
     <div class="navbar-container">
-      <div class="navbar-title cyan-70 header-2">台北一日遊</div>
+      <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
       <div>
       <button class="navbar-button gray-70 body">預定行程</button>
       <button class="navbar-button gray-70 body">登入/註冊</button>
@@ -20,42 +20,43 @@
     </div>
     </div>
 
-  
-  <header class="header"></header>
+  <hr/>
 
-  <div class="main-container">
+  <div class="attraction-main-container">
   <div class="picture-booking-container">
     <div class="picture">
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg" style="width:100%"></div>
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11002891.jpg" style="width:100%"></div>
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D315/E70/F65/1e0951fb-069f-4b13-b5ca-2d09df1d3d90.JPG" style="width:100%"></div>
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D260/E538/F274/e7d482ba-e3c0-40c3-87ef-3f2a1c93edfa.JPG" style="width:100%"></div>
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D919/E767/F581/9ddde70e-55c2-4cf0-bd3d-7a8450582e55.jpg" style="width:100%"></div>
-      <div class="slides-picture"><img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C1/D28/E891/F188/77a58890-7711-4ca2-aebe-4aa379726575.JPG" style="width:100%"></div>
-      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-      <a class="next" onclick="plusSlides(1)">&#10095;</a>
-        </div>
+      <!-- Image slideshow will be inserted here! -->
+      
+      <button class="attraction-scroll-btn left-btn" id="attraction-scroll-left" onclick="plusSlides(-1)"><img src=../static/images/button_left.svg></button>
+      <button class="attraction-scroll-btn right-btn" id="attraction-scroll-right" onclick="plusSlides(1)"><img src=../static/images/button_right.svg></button>
+      <div class="dot-button-container">
+        <!-- Dot buttons will be inserted here! -->
+      </div>
+    </div>
+
     <div class="booking">
       <div class="attraction-text header-3 gray-70 bold"></div>
-      <span class="category-text body"></span> at <span class="mrt-text body"></span>
+      <div><span class="category-text body"></span>at<span class="mrt-text body"></span></div>
     
       <div class="choose-order-form">
     
         <div class="body bold">訂購導覽行程</div>
-        <div class="body">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+        <div class="content">以此景點為中心的一日行程，帶您探索城市角落故事</div>
 
-        <form onsubmit="">
+        <form class="order-details-form">
         <div>選擇日期：
           <label for="travel_date"></label>
-          <input type="date" id="travel_date" name="travel_date">
+          <input type="date" id="travel_date" name="travel_date" class="date-picker" placeholder="yyyy/mm/dd">
           <div id="date-text"></div>
         </div>
 
-        <div>選擇時間：
-          <input type="radio" id="morning" name="timeslot" value="morning" checked>
-          <label for="morning">上半天</label>
-          <input type="radio" id="afternoon" name="timeslot" value="afternoon">
-          <label for="afternoon">下半天</label>
+        <div class="radio-form">選擇時間：
+          <input class="rdobutton_radio" type="radio" id="morning" name="timeslot" value="morning" checked>
+          <!-- <span class="checkmark-container"><span class="checkmark">AAA</span></span> -->
+          <label class="rdobutton_label" for="morning"></label>上半天
+          <input class="rdobutton_radio" type="radio" id="afternoon" name="timeslot" value="afternoon">
+          <!-- <span class="checkmark-container"><span class="checkmark">AAA</span></span> -->
+          <label class="rdobutton_label" for="afternoon"></label>下半天
         </div>
 
         <div>導覽費用：新台幣 <span id="tour-price"></span> 元</div>
@@ -75,8 +76,9 @@
   <div class="content text-block-8 gray-70"></div>
   </div>
 
-  
+</div>  
 
-  <script src="../static/scripts/script_attraction.js"></script>
+<div class="footer body bold">COPYRIGHT &copy; 2024 台北一日遊</div>
+<script src="../static/scripts/script_attraction.js"></script>
 </body>
 </html>
