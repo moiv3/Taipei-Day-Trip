@@ -4,8 +4,14 @@ body {
     padding:0;
     font-family: "Noto Sans TC", sans-serif;
 }
+
 a {
     text-decoration: none;
+}
+
+.hr {
+    width: 100%;
+    border-top: 1px solid rgb(224, 224, 224);
 }
 
 /* 字體大小區域 */
@@ -120,7 +126,7 @@ a {
     justify-content: space-between;
     align-items: center;
     height: 54px;
-    padding-left: 10px;
+    padding-left: 10px;    
 }
 
 .navbar-title{
@@ -134,7 +140,7 @@ a {
     font-family: "Noto Sans TC", sans-serif; /* override button的預設設定 */
 }
 
-/* header(101背景圖)區域 20240605 */
+/* header(101背景圖)區域 20240612 */
 .header{
     background-image: url('images/welcome_image.png');
     background-size: cover;
@@ -205,6 +211,9 @@ a {
     background-size: 30px 30px;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.header-hr {
 }
 
 /* 主文區域 20240603 */
@@ -352,21 +361,22 @@ a {
 
 /* attraction頁面 */
 .attraction-main-container{
-    /*有RWD設定，參見最下方*/
+    /* 有RWD設定，參見最下方 */
     max-width: 1200px;
-    margin: auto;
-    padding: 40px 0px 40px 0px;
+    margin: 54px auto 0 auto; /* 54px navbar 40px margin */
+    /* padding: 40px 0px 40px 0px; */
 }
 
 .picture-booking-container{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     display: flex;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: center;    
+    padding: 40px 0px 40px 0px;
 }
 
 .picture{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     width: 540px;
     position: relative;
     height: 400px;
@@ -375,9 +385,9 @@ a {
 }
 
 .booking{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     flex-grow: 1;
-    height: 400px; /* RWD to 350 px not yet implemented!! */
+    height: 400px;
     display: flex;
     flex-direction: column;
 }
@@ -386,144 +396,80 @@ a {
     margin: 10px;
 }
 
-.text-block-6{
-    border: 1px red solid;
-}
-
-.text-block-7{
-    border: 1px red solid;
-}
-
-.text-block-8{
-    border: 1px red solid;
-}
-
 .choose-order-form{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     border-radius: 5px;
     background-color: #E8E8E8;
     height: 300px;
     bottom: 0;
-    padding: 10px;
+    padding: 15px 20px 15px 20px;
     box-sizing: border-box;
     width: calc(100%-20px);
     display: flex;
     flex-direction: column;
     align-items: flex-start; /*維持預約button的大小*/
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
 }
 
 .order-details-form > * { /* select child elements (僅一階)*/
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /* margin-top: 10px; */
+    margin-bottom: 15px;
     }
+
+.order-title {
+    line-height: 22px;
+}
 
 .booking-button{
     background-color: #448899;
     padding: 10px 20px 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 0px;
     border: 0;
     border-radius: 5px;
 }
 
 .attraction-content{
-    border: 1px red solid;
+    /* border: 1px red solid; */
+    margin: 40px 0 40px 0;
     padding: 10px;
 }
 
 .attraction-content-title {
-    margin: 16px 0 16px 0;
+    line-height: 32px;
+    margin-top: 20px;
 }
 
-.date-picker{
-    width: 193px;
-    height: 35px;
-    border: 0;
-}
+/* date picker依照解說，直接使用瀏覽器預設的樣式，故移除相關CSS settings */
 
+/* 這裡依據figma的樣式打造自訂的radio button. 參考網路上的教學 */
 .radio-form{
     display: flex;
     align-items: center;
     /* position: relative; */
 }
 
-.checkmark {
-    /* position: absolute; */
-    /* top: 0;
-    left: 0; */
-    height: 25px;
-    width: 25px;
-    background-color: white;
-    border: 1px red solid;
-}
-
-.checkmark:checked {
-    background-color: #448899;
-}
-
-#morning input:checked ~ .checkmark-container{
-    background-color: #448899;
-}
-
-.radio-originalbutton{
-    display:none;
-}
-
-.radio-actualbutton{
-    /* position: relative; */
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    border: 2px solid white;
-    border-radius: 50%;
-    background-color: white;
-    /* -moz-transition: background-color 0.2s ease-in;
-    -webkit-transition: background-color 0.2s ease-in;
-    -o-transition: background-color 0.2s ease-in;
-    transition: background-color 0.2s ease-in; */
-}
-
-.radio-actualbutton::after {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    border: 2px solid white;
-    border-radius: 50%;
-    background-color: #448899;
-}
-
-.rdobutton_label { /* 主外框 */
+/* 整體概念：把label加上一個class, 畫出我要的樣式，然後讓他剛好在原來的radio button element的後面。最後把原來的radio element隱藏掉 */
+/* 1. 把新創造的element打造成我們要的型態 */
+.radio-newlycreated-button {
     position: relative;
     display: inline-block;
     width: 18px;
     height: 18px;
     cursor: pointer;
     border: 2px solid white;
-    border-radius: 25px;
+    border-radius: 50%;
+    margin: 0 5px 0 5px;
     background-color: white;
 }
 
-/* .rdobutton_label::before {
-    content: "";
-    position: absolute;
-    top: 7px;
-    left: 7px;
-    width: 16px;
-    height: 16px;
-    background-color: white;
-    border-radius: 25px;
-    opacity: 0;
-} */
-
-input:checked + .rdobutton_label { /* 當check時 按鈕顏色改變 */
+/* 2. 當radio button是checked狀態時(input:checked)，同時改變"後面的新創的element"(+ .radio-newlycreated-button)的樣貌 */
+input:checked + .radio-newlycreated-button {
     background-color: #448899;
 }
 
-.rdobutton_radio:checked + .rdobutton_label::before { /* 當check時 打勾消失 */
-    opacity: 1;
-}
-
-.rdobutton_radio {
+/* 3. 最後，讓原來的radio button消失即可 */
+.radio-original-button {
     display: none;
 }
 
@@ -622,8 +568,8 @@ input:checked + .rdobutton_label { /* 當check時 按鈕顏色改變 */
 
 .attraction-main-container{
     max-width: 100%;
-    margin: auto;
-    padding: 40px 0px 40px 0px;
+    /* margin: auto; */
+    /* padding: 40px 0px 40px 0px; */
 }
 
 }
@@ -647,10 +593,11 @@ input:checked + .rdobutton_label { /* 當check時 按鈕顏色改變 */
 
 .picture-booking-container{   
     display: block;
+    padding-top: 0;
 }
 
 .picture{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     width: 100%;
     position: relative;
     height: 350px;
@@ -658,10 +605,20 @@ input:checked + .rdobutton_label { /* 當check時 按鈕顏色改變 */
 }
 
 .booking{
-    border: 1px red solid;
+    /* border: 1px red solid; */
     width: 100%;
     height: 390px;
+    margin-top: 20px;
 }
+
+.attraction-header-hr {
+    border-top: 0;
+}
+
+.attraction-content{
+    padding: 10px 10px 10px 20px;
+}
+
 }
 
 /* 其他狀況區域 */

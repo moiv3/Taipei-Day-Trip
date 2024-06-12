@@ -11,16 +11,15 @@
 </head>
 <body>
     <div class="navbar-background">
-    <div class="navbar-container">
-      <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
-      <div>
-      <button class="navbar-button gray-70 body">預定行程</button>
-      <button class="navbar-button gray-70 body">登入/註冊</button>
+      <div class="navbar-container">
+        <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
+        <div>
+        <button class="navbar-button gray-70 body">預定行程</button>
+        <button class="navbar-button gray-70 body">登入/註冊</button>
+        </div>
       </div>
+      <div class="hr attraction-header-hr"></div>
     </div>
-    </div>
-
-  <hr/>
 
   <div class="attraction-main-container">
   <div class="picture-booking-container">
@@ -36,44 +35,44 @@
 
     <div class="booking">
       <div class="attraction-text header-3 gray-70 bold"></div>
-      <div><span class="category-text body"></span>at<span class="mrt-text body"></span></div>
+      <div><span class="category-text body"></span> at <span class="mrt-text body"></span></div>
     
-      <div class="choose-order-form">
-    
-        <div class="body bold">訂購導覽行程</div>
+      <!-- <div class="choose-order-form"> -->
+        <form class="choose-order-form order-details-form">
+        <div class="order-title body bold">訂購導覽行程</div>
         <div class="content">以此景點為中心的一日行程，帶您探索城市角落故事</div>
 
-        <form class="order-details-form">
-        <div>選擇日期：
+        <!-- <form class="order-details-form"> -->
+        <div class="radio-form">選擇日期：
           <label for="travel_date"></label>
-          <input type="date" id="travel_date" name="travel_date" class="date-picker" placeholder="yyyy/mm/dd">
+          <input type="date" id="travel_date" name="travel_date" class="date-picker">
           <div id="date-text"></div>
         </div>
 
         <div class="radio-form">選擇時間：
-          <input class="rdobutton_radio" type="radio" id="morning" name="timeslot" value="morning" checked>
-          <!-- <span class="checkmark-container"><span class="checkmark">AAA</span></span> -->
-          <label class="rdobutton_label" for="morning"></label>上半天
-          <input class="rdobutton_radio" type="radio" id="afternoon" name="timeslot" value="afternoon">
-          <!-- <span class="checkmark-container"><span class="checkmark">AAA</span></span> -->
-          <label class="rdobutton_label" for="afternoon"></label>下半天
+          <input class="radio-original-button" type="radio" id="morning" name="timeslot" value="morning" checked>
+          <label class="radio-newlycreated-button" for="morning"></label>上半天
+          <input class="radio-original-button" type="radio" id="afternoon" name="timeslot" value="afternoon">
+          <label class="radio-newlycreated-button" for="afternoon"></label>下半天
         </div>
 
         <div>導覽費用：新台幣 <span id="tour-price"></span> 元</div>
-        </form>
+        <!-- </form> -->
 
         <button class="booking-button body white bold">開始預約行程
-      
-      </div>
+        </form>
+      <!-- </div> -->
     </div>
   </div>
+  
+  <div class="hr"></div>
 
   <div class="attraction-content">
-  <div class="content text-block-6 gray-70"></div>
+  <div class="attraction-description-text content gray-70"></div>
   <div class="attraction-content-title body bold gray-70">景點地址：</div>
-  <div class="content text-block-7 gray-70"></div>
+  <div class="attraction-address-text content gray-70"></div>
   <div class="attraction-content-title body bold gray-70">交通方式：</div>
-  <div class="content text-block-8 gray-70"></div>
+  <div class="attraction-transport-text content gray-70"></div>
   </div>
 
 </div>  

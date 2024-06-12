@@ -12,15 +12,23 @@ if (match && match[1]){
     attractionID = match[1];
 }
 else{
-    alert("Attraction not found!");
+    console.log("NOT FOUND");
+    window.location.pathname("/");
 }
 
 // Fetch any url and parse as json.
 async function getAttractionData(url){
-    console.log("Fetching URL:", url);
-    const response = await fetch(url);
-    const response_json = await response.json();
-    return response_json;
+    try{
+        console.log("Fetching URL:", url);
+        const response = await fetch(url);
+        const response_json = await response.json();
+        return response_json;
+    }
+    catch(e){
+        // Backend responds with 400 or 500 when error happens, so this part is not successfully triggered yet.
+        console.log("Fetch failed due to the following error:", e);
+        window.location.href = "/";
+    }
 }
 
 // Fetch and render content based on attraction ID + base URL.
@@ -29,21 +37,33 @@ async function getAttractionPage(attractionID){
     response_json = await getAttractionData(attractionurlBase+attractionID);
     console.log("Obtained response:", response_json);
 
+    // Error handling
+    if (response_json.error){
+        alert("錯誤："+ response_json.message);
+        window.location.href = "/";
+        return;
+    }
+    else if (!Object.keys(response_json.data).length){
+        alert("景點無資料，請重新嘗試，如持續出現請聯繫系統管理員");
+        window.location.href = "/";
+        return;
+    }
+
     // render text in the lower div
-    let descriptionDiv = document.querySelector(".text-block-6");
-    descriptionDiv.innerHTML = response_json.data.description;
-    let addressDiv = document.querySelector(".text-block-7");
-    addressDiv.innerHTML = response_json.data.address;
-    let transportDiv = document.querySelector(".text-block-8");
-    transportDiv.innerHTML = response_json.data.transport;
+    let descriptionDiv = document.querySelector(".attraction-description-text");
+    descriptionDiv.textContent = response_json.data.description;
+    let addressDiv = document.querySelector(".attraction-address-text");
+    addressDiv.textContent = response_json.data.address;
+    let transportDiv = document.querySelector(".attraction-transport-text");
+    transportDiv.textContent = response_json.data.transport;
 
     // render text in the top-right div
     let attractionDiv = document.querySelector(".attraction-text");
-    attractionDiv.innerHTML = response_json.data.name;
+    attractionDiv.textContent = response_json.data.name;
     let categorySpan = document.querySelector(".category-text");
-    categorySpan.innerHTML = response_json.data.category;
+    categorySpan.textContent = response_json.data.category;
     let mrtSpan = document.querySelector(".mrt-text");
-    mrtSpan.innerHTML = response_json.data.mrt;
+    mrtSpan.textContent = response_json.data.mrt;
 
     // render images for image scroll
     console.log("Total images received:", response_json.data.images.length);

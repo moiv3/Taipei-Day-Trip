@@ -5,6 +5,7 @@ let initial_json;
 let current_page = 0;
 const attractions_per_load = 12;
 let items_in_response;
+let observer;
 
 // Fetch景點data相關函數: fetchNewAttractions, createBigBox, addAttractionData
 // 根據輸入的page&keyword fetch景點data, 存到initial_json裡面
@@ -181,9 +182,14 @@ function initializeObserver(){
         })
     })
 
-    let observer = new IntersectionObserver(callback, options);
+    observer = new IntersectionObserver(callback, options);
     let target = document.querySelector("#intersectionObserverObj");
     observer.observe(target);
+}
+
+function stopObserver(){
+    let target = document.querySelector("#intersectionObserverObj");
+    observer.unobserve(target);
 }
 
 // 初始化Search bar Event Listener
@@ -220,12 +226,38 @@ function clearAllBigBoxes(){
     return;
 }
 
+// search bar相關函數clearAllBigBoxes, searchAttraction
+// 清除畫面上所有attraction divs
+function clearAllBigBoxesAnchor(){ 
+    let target = document.querySelector("#intersectionObserverObj");
+    observer.unobserve(target);
+    // let target = document.querySelector("#intersectionObserverObj");
+    // IntersectionObserver.unobserve(target);
+    const attractions_on_screen = document.querySelectorAll(".attraction-anchor") 
+    for (attraction of attractions_on_screen){
+        attraction.remove();
+    }
+    return;
+}
+
+
 // 關鍵字搜尋功能
 async function searchAttraction(keyword){
-    await fetchNewAttractions(page_input = 0, keyword_input = keyword);
-    clearAllBigBoxes();
+    stopObserver();
+    clearAllBigBoxesAnchor();
+    let searchResponse = await fetchNewAttractions(page_input = 0, keyword_input = keyword);
+    if (!searchResponse.data.length){
+        const newAnchor = document.createElement("a");
+        newAnchor.className = "attraction-anchor body"
+        newAnchor.append("未找到相關景點，請嘗試其他關鍵字！");
+        const bigBoxGroup = document.querySelector(".bigboxgroup");
+        bigBoxGroup.append(newAnchor);
+        initializeObserver();
+        return
+    }
     await createBigBox();
     await addAttractionData();
+    initializeObserver();
 }
 
 // ***畫面初始化***
