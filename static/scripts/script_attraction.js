@@ -119,12 +119,14 @@ function showSlides(index){
 
     for (slideNo = 0; slideNo < totalSlides; slideNo++){
         if (slideNo === index){
-            slides[slideNo].style.display = "block";
+            slides[slideNo].classList.add("slides-active"); //add class
+            // slides[slideNo].style.display = "block"; //backup
             dots[slideNo].className = "dot-button selected";
             console.log("Activating slide:", slideNo);
         }
         else{
-            slides[slideNo].style.display = "none";
+            slides[slideNo].classList.remove("slides-active"); //remove class
+            // slides[slideNo].style.display = "none";
             dots[slideNo].className = "dot-button";
         }
     }

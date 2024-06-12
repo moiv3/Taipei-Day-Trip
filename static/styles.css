@@ -478,9 +478,25 @@ input:checked + .radio-newlycreated-button {
     right: 0;
 }
 
+/* There is a transition: opacity 1s; method on the web, might need to research more */ 
 .slides-picture{
     display: none;    
     height: 100%;
+}
+
+.slides-picture.slides-active{
+    display: block;
+    animation: visible 1.5s; 
+}
+
+/* This code & "animation: visible 1.5s;" line above are for CSS transitions. Also need to use js to toggle. */
+@keyframes visible {
+ from {
+   opacity: 0;
+ }
+ to {
+   opacity: 1;
+ }
 }
 
 .slides-picture > img{  
