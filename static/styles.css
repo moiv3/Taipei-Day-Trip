@@ -447,7 +447,6 @@ a {
     background-color: white;
     font-size: 16px;
     font-family: "Noto Sans TC", sans-serif; 
-    /* -webkit-appearance: none; */
 }
 
 .date-picker::-webkit-calendar-picker-indicator {
@@ -455,7 +454,6 @@ a {
     width: 24px;
     height: 24px;
     padding: 0;
-    -webkit-appearance: none;
 }
 
 /* 這裡依據figma的樣式打造自訂的radio button. 參考網路上的教學 */
