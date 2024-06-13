@@ -213,9 +213,6 @@ a {
     background-repeat: no-repeat;
 }
 
-.header-hr {
-}
-
 /* 主文區域 20240603 */
 .main-container{
     /*有RWD設定，參見最下方*/
@@ -440,7 +437,26 @@ a {
     margin-top: 20px;
 }
 
-/* date picker依照解說，直接使用瀏覽器預設的樣式，故移除相關CSS settings */
+/* date picker 相關 CSS settings */
+.date-picker{
+    box-sizing: border-box;
+    width: 193px;
+    height: 35px;
+    border: 0;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    font-size: 16px;
+    font-family: "Noto Sans TC", sans-serif; 
+    /* -webkit-appearance: none; */
+}
+
+.date-picker::-webkit-calendar-picker-indicator {
+    background: url(../static/images/calendar_icon.png) no-repeat;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    -webkit-appearance: none;
+}
 
 /* 這裡依據figma的樣式打造自訂的radio button. 參考網路上的教學 */
 .radio-form{
@@ -640,11 +656,12 @@ input:checked + .radio-newlycreated-button {
 
 /* 其他狀況區域 */
 /* iOS+Chrome/iOS+Safari有個詭異的行為，會預設input form四周都有圓角(約5px radius)，Windows+Chrome則不會。
-研究了許久，加這兩行可以把上述圓角強制處理掉。但不知其必要性。先留著，如果之後有衍生其他layout問題再修正。 */
-input {
+研究了許久，加這兩行可以把上述圓角強制處理掉。但不知其必要性。先留著，如果之後有衍生其他layout問題再修正。
+追記：後來影響到attraction的日期框了。解決方法：以下兩行拿掉，因為search bar原本就和search icon有5px的重疊，剛好會被遮住。 iOS直擺橫擺皆確認OK。 */
+/* input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-}
+} */
 
 /* 搜尋框瀏覽器會自定義font, 為了達成與設計稿一致的字型，直接定義之。 (i: means case-insensitive) */
 input[type="text" i] {
