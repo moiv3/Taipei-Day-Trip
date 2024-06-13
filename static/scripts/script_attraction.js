@@ -1,8 +1,3 @@
-// function getQueryParam(param) {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     return urlParams.get(param);
-// }
-
 // Get attraction ID from the URL(window object)
 let pathName = window.location.pathname;
 let attractionID;
@@ -12,7 +7,7 @@ if (match && match[1]){
     attractionID = match[1];
 }
 else{
-    console.log("NOT FOUND");
+    console.log("Attraction number from URL not found.");
     window.location.pathname("/");
 }
 
@@ -48,6 +43,10 @@ async function getAttractionPage(attractionID){
         window.location.href = "/";
         return;
     }
+
+    // render page title text in broswer tab
+    let attractionTitle = document.querySelector(".attraction-title");
+    attractionTitle.textContent = response_json.data.name + " - WeHelp 台北一日遊";
 
     // render text in the lower div
     let descriptionDiv = document.querySelector(".attraction-description-text");
@@ -101,14 +100,14 @@ async function getAttractionPage(attractionID){
     console.log("picture div check:", pictureDiv);
 }
 
-// Show a particular slide.
+// Show a particular slide
 function showSlides(index){
     let slides = document.querySelectorAll(".slides-picture");
     let dots = document.querySelectorAll(".dot-button");
     let totalSlides = slides.length;
 
     if (index < 0){
-        // mod(n,m) when n<0 in JS: mod(n,m) = ((n % m) + m) % m
+        // positive number for mod(n,m) when n<0 in JS: mod(n,m) = ((n % m) + m) % m
         index = ((index % totalSlides) + totalSlides) % totalSlides;
     }
     else if (index >= totalSlides){
@@ -132,14 +131,15 @@ function showSlides(index){
     }
 }
 
-// Left and Right Arrow buttons handling. 
+// Left and Right Arrow buttons handling.
 function plusSlides(number){
     slideIndex += number;
     console.log("Internal slide no.:", slideIndex);
     showSlides(slideIndex);
 }
 
-// Tour price toggle function
+// Tour price toggle function. Now support fixed price only.
+// If advanced pricing schema occurs in the future, edit the function behavior accordingly
 function initializeTourPrice(){
     document.querySelector("#tour-price").textContent = "2000";
 
@@ -155,8 +155,6 @@ function initializeTourPrice(){
         }
     });    
 }
-
-
 
 // Initialize Attraction Page DOM
 async function initializeAttraction(){
