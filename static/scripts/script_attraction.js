@@ -67,6 +67,37 @@ async function getAttractionPage(attractionID){
     // render images for image scroll
     console.log("Total images received:", response_json.data.images.length);
 
+    // add arrows if > 1 picture
+    if (response_json.data.images.length > 1){
+        console.log("Adding arrows...");
+
+        let pictureDiv = document.querySelector(".picture");
+        let dotContainer = document.querySelector(".dot-button-container");
+
+        const newLeftArrowImage = document.createElement("img");
+        newLeftArrowImage.src="../static/images/button_left_noborder.png"
+        const newLeftArrowButton = document.createElement("button");
+        newLeftArrowButton.className = "attraction-scroll-btn left-btn";
+        newLeftArrowButton.id = "attraction-scroll-left";
+        newLeftArrowButton.addEventListener('click', function(){
+            plusSlides(-1);
+        });
+        newLeftArrowButton.appendChild(newLeftArrowImage);
+        pictureDiv.insertBefore(newLeftArrowButton, dotContainer);
+
+        const newRightArrowImage = document.createElement("img");
+        newRightArrowImage.src="../static/images/button_right_noborder.png"
+        const newRightArrowButton = document.createElement("button");
+        newRightArrowButton.className = "attraction-scroll-btn right-btn";
+        newRightArrowButton.id = "attraction-scroll-right";
+        newRightArrowButton.addEventListener('click', function(){
+            plusSlides(1);
+        });
+        newRightArrowButton.appendChild(newRightArrowImage);
+        pictureDiv.insertBefore(newRightArrowButton, dotContainer);
+    }
+
+    // add pictures
     for (let i=0; i<response_json.data.images.length;i++){
         console.log("Loading image...");
         let pictureDiv = document.querySelector(".picture");
@@ -81,8 +112,8 @@ async function getAttractionPage(attractionID){
         // pictureDiv.prepend(newPictureDiv);
         
         // below method adds in the correct order
-        let buttonElement = document.querySelector("#attraction-scroll-left");
-        pictureDiv.insertBefore(newPictureDiv, buttonElement);
+        let dotContainer = document.querySelector(".dot-button-container");
+        pictureDiv.insertBefore(newPictureDiv, dotContainer);
         // console.log("Added picture div!");
 
         // Add selection dots
@@ -93,7 +124,6 @@ async function getAttractionPage(attractionID){
             showSlides(slideIndex);
         });
 
-        let dotContainer = document.querySelector(".dot-button-container");
         dotContainer.append(newDotSpan);
     }
     let pictureDiv = document.querySelector(".picture");

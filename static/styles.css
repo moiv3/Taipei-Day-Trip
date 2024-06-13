@@ -512,6 +512,7 @@ input:checked + .radio-newlycreated-button {
     top: 50%;
     transform: translateY(-50%);
     opacity: 75%;
+    z-index: 5;
 }
 
 .attraction-scroll-btn:hover{
