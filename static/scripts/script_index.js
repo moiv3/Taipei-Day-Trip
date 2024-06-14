@@ -266,3 +266,12 @@ async function initializeSequence(){
 }
 
 initializeSequence();
+
+function activateCurtain(){
+    let curtainElement = document.querySelector(".curtain");
+    curtainElement.classList.add("active");
+}
+function deactivateCurtain(){
+    let curtainElement = document.querySelector(".curtain");
+    curtainElement.classList.remove("active");
+}
