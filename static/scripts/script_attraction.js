@@ -99,6 +99,10 @@ async function getAttractionPage(attractionID){
 
     // add pictures
     for (let i=0; i<response_json.data.images.length;i++){
+        // console.log("Preloading image...")
+        // const preloadImage = new Image();
+        // preloadImage.src = response_json.data.images[i];
+
         console.log("Loading image...");
         let pictureDiv = document.querySelector(".picture");
         const newPictureDiv = document.createElement("div");
