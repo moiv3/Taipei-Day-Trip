@@ -72,3 +72,45 @@ An elastic IP was associated with the EC2 instance.
 The webapp was tested, then ran with nohup on.
 
 Submitted the PR for review. (2024/05/29)
+
+## 2024/06/17
+New database
+Name/email/hashed_password
+
+CREATE TABLE member(
+id int not null auto_increment,
+user_id varchar(255) not null,
+email varchar(255) not null,
+hashed_password varchar(255) not null,
+PRIMARY KEY(id));
+ALTER TABLE member ADD name varchar(255) not null;
+ALTER TABLE member RENAME COLUMN user_id to username;
+
+mysql> desc member;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | int          | NO   | PRI | NULL    | auto_increment |
+| username        | varchar(255) | NO   |     | NULL    |                |
+| email           | varchar(255) | NO   |     | NULL    |                |
+| hashed_password | varchar(255) | NO   |     | NULL    |                |
+| name            | varchar(255) | NO   |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> show create table member;
++--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table
+
+                                                                                |
++--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| member | CREATE TABLE `member` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `hashed_password` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)

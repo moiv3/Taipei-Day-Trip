@@ -13,16 +13,14 @@
 
 <body>
   <div class="navbar-background">
-  <div class="navbar-container">
-    <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
-    <div>
-    <button class="navbar-button gray-70 body">預定行程</button>
-    <button class="navbar-button gray-70 body">登入/註冊</button>
+    <div class="navbar-container">
+      <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
+      <div class="navbar-topright-container">
+        <button class="navbar-button gray-70 body booking-button-topright">預定行程</button>
+        <button class="navbar-button gray-70 body signin-button"></button><!--renders 登入/註冊 or 登出系統-->
+      </div>
     </div>
   </div>
-  </div>
-</div>
-
 
   <header class="header">
     <div class="header-container">
@@ -56,17 +54,24 @@
 
   <div id="intersectionObserverObj"></div>
   <div class="footer body bold">COPYRIGHT &copy; 2024 台北一日遊</div>
+  <script src="../static/scripts/script_general.js"></script>
   <script src="../static/scripts/script_index.js"></script>
 
-  <div class="curtain">
-    <div class="signup-form-bg">
-      <form class="signup-form">
-        <input type="text" name="username-name" id="username-id">
-        <input type="password" name="password-name" id="password-id">
-        <button></button>
+  <!-- <div class="curtain active">
+    <div class="signup-form-bg">      
+      <div class="decoration-bar"></div>
+      <button class="deactivate-curtain-button"></button>
+      <div class="header-3 bold signin gray-70">登入會員帳號</div>
+      <form class="signin-form" id="signin_form" method="post">
+        <input class="body" type="text" name="username_name" id="username_id" placeholder="輸入電子信箱">
+        <input class="body" type="password" name="password_name" id="password_id" placeholder="輸入密碼">
+        <button class="btn" id="signin_button">登入帳號</button>
+        <div class="signin-response-text"></div>
+        <div class="signup-text gray-70">還沒有帳戶？<a href="#">點此註冊</a></div>
       </form>
     </div>
-  </div>
+  </div> -->
+
 </body>
 
 </html>
