@@ -12,7 +12,6 @@ async function checkToken(){
         });
         const signinResponseJson = await signinResponse.json();
         if (!signinResponseJson.data){
-        console.log("Error from server, message:", signinResponseJson.message)
         return false;
         }
         else{
