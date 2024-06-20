@@ -3,7 +3,6 @@
 async function checkToken(){
     let signinStatusToken = window.localStorage.getItem('token');
     if (!signinStatusToken){
-        console.log("No token found.")
         return false;
     }
     else{
@@ -17,9 +16,7 @@ async function checkToken(){
         return false;
         }
         else{
-            console.log("User is logged in!")
             return true;
-            // 是否要return data?
         }
     }
 }
@@ -198,7 +195,7 @@ async function signin(e){
     const signinFormData = {};
     signinFormData["email"] = document.querySelector("#username_id").value;
     signinFormData["password"] = document.querySelector("#password_id").value;
-    console.log(signinFormData);
+    // console.log(signinFormData);
     const signinResponse = await fetch("/api/user/auth",{
         method: "PUT",
         body: JSON.stringify(signinFormData),
@@ -210,16 +207,16 @@ async function signin(e){
         const signinResponseElement = document.querySelector(".signin-response-text");
         signinResponseElement.textContent = "無法登入：" + signinResponseJSON.message;
         signinResponseElement.style.display = "block";
-        setTimeout(() => signinResponseElement.style.display = "none", 5000);
+        setTimeout(() => signinResponseElement.style.display = "none", 3000);
         console.log(signinResponseJSON.message);
     }
     else if (signinResponseJSON.token){
-        console.log("Signed in! Storing token...");
+        console.log("Successfully signed in!");
         window.localStorage.setItem('token', signinResponseJSON.token);
         const signinResponseElement = document.querySelector(".signin-response-text");
-        signinResponseElement.textContent = "登入成功！五秒後將重新整理畫面...";
+        signinResponseElement.textContent = "登入成功！即將重新整理畫面...";
         signinResponseElement.style.display = "block";
-        setTimeout(() => window.location.reload(), 5000);
+        setTimeout(() => window.location.reload(), 3000);
     }
     else{
         //其他狀況暫放
@@ -229,14 +226,13 @@ async function signin(e){
 
 async function signup(e){
     e.preventDefault;
-    console.log("signup event listener triggered!");
-    // can we use use formdata?
+    // console.log("signup event listener triggered!");
     const signupFormData = {};
     signupFormData["email"] = document.querySelector("#username_id").value;
     signupFormData["password"] = document.querySelector("#password_id").value;
     signupFormData["name"] = document.querySelector("#name_id").value;
 
-    console.log(signupFormData);
+    // console.log(signupFormData);
     const signupResponse = await fetch("/api/user",{
         method: "POST",
         body: JSON.stringify(signupFormData),
@@ -248,14 +244,14 @@ async function signup(e){
         const signupResponseElement = document.querySelector(".signin-response-text");
         signupResponseElement.textContent = "無法註冊：" + signupResponseJSON.message;
         signupResponseElement.style.display = "block";
-        setTimeout(() => signupResponseElement.style.display = "none", 5000);
+        setTimeout(() => signupResponseElement.style.display = "none", 3000);
     }
     else if (signupResponseJSON.ok){
         console.log("Got response from server: new user successfully created!");
         const signupResponseElement = document.querySelector(".signin-response-text");
         signupResponseElement.textContent = "新會員註冊成功！請使用帳號密碼登入";
         signupResponseElement.style.display = "block";
-        setTimeout(() => signupResponseElement.style.display = "none", 5000);
+        setTimeout(() => signupResponseElement.style.display = "none", 3000);
     }
     else{
         //其他狀況暫放
@@ -263,21 +259,20 @@ async function signup(e){
     }
 }
 
-function handleSigninEvent(event){
-    event.preventDefault();
-    signin(event);
+async function handleSigninEvent(event){
+    event.preventDefault();  
+    signinButton = document.querySelector("#signin_button");
+    signinButton.disabled = true;
+    await signin(event);
+    setTimeout(() => signinButton.disabled = false, 3000);
 }
 
-function handleSignupEvent(event){
+async function handleSignupEvent(event){
     event.preventDefault();
-    signup(event);
-}
-
-// on clicking signin/signup button, 
-function initializeSignin(){
-    const signinForm = document.querySelector("#signin_form");
-    console.log(signinForm);
-    signinForm.addEventListener("submit", handleSigninEvent);
+    signinButton = document.querySelector("#signin_button");
+    signinButton.disabled = true;
+    await signup(event);
+    setTimeout(() => signinButton.disabled = false, 3000);
 }
 
 // only on page load, initialize signin/signup button
