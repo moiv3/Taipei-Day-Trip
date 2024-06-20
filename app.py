@@ -22,7 +22,7 @@ db_user = os.getenv("db_user")
 db_pw = os.getenv("db_pw")
 db_database = os.getenv("db_database")
 secret_key = os.getenv("jwt_secret_key")
-token_valid_time = timedelta(seconds=20)
+token_valid_time = timedelta(days=7)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Pydantic classes for output
