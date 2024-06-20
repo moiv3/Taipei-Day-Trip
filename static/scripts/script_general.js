@@ -196,12 +196,13 @@ async function signin(e){
     e.preventDefault;
     console.log("sign-in event listener triggered!");
     const signinFormData = {};
-    signinFormData["username"] = document.querySelector("#username_id").value;
+    signinFormData["email"] = document.querySelector("#username_id").value;
     signinFormData["password"] = document.querySelector("#password_id").value;
     console.log(signinFormData);
     const signinResponse = await fetch("/api/user/auth",{
         method: "PUT",
-        body: JSON.stringify(signinFormData)
+        body: JSON.stringify(signinFormData),
+        headers: new Headers({ "Content-Type":"application/json" })
     })
     signinResponseJSON = await signinResponse.json();
     if (signinResponseJSON.error){
@@ -231,14 +232,15 @@ async function signup(e){
     console.log("signup event listener triggered!");
     // can we use use formdata?
     const signupFormData = {};
-    signupFormData["username"] = document.querySelector("#username_id").value;
+    signupFormData["email"] = document.querySelector("#username_id").value;
     signupFormData["password"] = document.querySelector("#password_id").value;
     signupFormData["name"] = document.querySelector("#name_id").value;
 
     console.log(signupFormData);
     const signupResponse = await fetch("/api/user",{
         method: "POST",
-        body: JSON.stringify(signupFormData)
+        body: JSON.stringify(signupFormData),
+        headers: new Headers({ "Content-Type":"application/json" })
     })
     signupResponseJSON = await signupResponse.json();
     if (signupResponseJSON.error){
