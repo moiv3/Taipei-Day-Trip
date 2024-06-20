@@ -78,7 +78,7 @@ function createCurtainAndSigninForm(){
     let signinButtonElement = document.createElement("button");
     signinButtonElement.classList = "btn";
     signinButtonElement.id = "signin_button";
-    signinButtonElement.textContent="登入帳號";
+    signinButtonElement.textContent="登入帳戶";
     formElement.appendChild(signinButtonElement);
 
     let signinResponseElement = document.createElement("div");
@@ -153,7 +153,7 @@ function toggleSignupPrompt(){
         signinTextElement.textContent = "已經有帳戶了？";
 
         const promptElement = document.querySelector(".signup-container a");
-        promptElement.textContent = "登入會員帳號";
+        promptElement.textContent = "點此登入";
 
         formElement.removeEventListener("submit", handleSigninEvent);
         formElement.addEventListener("submit", handleSignupEvent);

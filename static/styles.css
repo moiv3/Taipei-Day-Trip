@@ -773,6 +773,11 @@ button {
     margin-top: 10px;
     display: flex;
     justify-content: center;
+    font-weight: 500;
+}
+
+.signup-container > a{
+    color:#666666;
 }
 
 .signin-response-text{
