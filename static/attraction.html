@@ -10,16 +10,16 @@
   <title class="attraction-title">Attraction</title>
 </head>
 <body>
-    <div class="navbar-background">
-      <div class="navbar-container">
-        <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
-        <div>
-        <button class="navbar-button gray-70 body">預定行程</button>
-        <button class="navbar-button gray-70 body">登入/註冊</button>
-        </div>
+  <div class="navbar-background">
+    <div class="navbar-container">
+      <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
+      <div class="navbar-topright-container">
+        <button class="navbar-button gray-70 body booking-button-topright">預定行程</button>
+        <button class="navbar-button gray-70 body signin-button"></button><!--renders 登入/註冊 or 登出系統-->
       </div>
-      <div class="hr attraction-header-hr"></div>
     </div>
+    <div class="hr attraction-header-hr"></div>
+  </div>
 
   <div class="attraction-main-container">
   <div class="picture-booking-container">
@@ -53,11 +53,9 @@
         </div>
 
         <div><span class="order-details-form-subtitle">導覽費用：</span>新台幣 <span id="tour-price"></span> 元</div>
-        <!-- </form> -->
 
         <button class="booking-button body white bold">開始預約行程
         </form>
-      <!-- </div> -->
     </div>
   </div>
   
@@ -74,6 +72,7 @@
 </div>  
 
 <div class="footer body bold">COPYRIGHT &copy; 2024 台北一日遊</div>
+<script src="../static/scripts/script_general.js"></script>
 <script src="../static/scripts/script_attraction.js"></script>
 </body>
 </html>
