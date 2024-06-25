@@ -8,7 +8,7 @@ if (match && match[1]){
 }
 else{
     console.log("Attraction number from URL not found.");
-    window.location.pathname("/");
+    window.location.pathname = "/";
 }
 
 // Fetch any url and parse as json.
@@ -43,95 +43,102 @@ async function getAttractionPage(attractionID){
         window.location.href = "/";
         return;
     }
+    else{
+        // render page title text in broswer tab
+        let attractionTitle = document.querySelector(".attraction-title");
+        attractionTitle.textContent = response_json.data.name + " - WeHelp 台北一日遊";
 
-    // render page title text in broswer tab
-    let attractionTitle = document.querySelector(".attraction-title");
-    attractionTitle.textContent = response_json.data.name + " - WeHelp 台北一日遊";
+        // render text in the lower div
+        let descriptionDiv = document.querySelector(".attraction-description-text");
+        descriptionDiv.textContent = response_json.data.description;
+        let addressDiv = document.querySelector(".attraction-address-text");
+        addressDiv.textContent = response_json.data.address;
+        let transportDiv = document.querySelector(".attraction-transport-text");
+        transportDiv.textContent = response_json.data.transport;
 
-    // render text in the lower div
-    let descriptionDiv = document.querySelector(".attraction-description-text");
-    descriptionDiv.textContent = response_json.data.description;
-    let addressDiv = document.querySelector(".attraction-address-text");
-    addressDiv.textContent = response_json.data.address;
-    let transportDiv = document.querySelector(".attraction-transport-text");
-    transportDiv.textContent = response_json.data.transport;
+        // render text in the top-right div
+        let attractionDiv = document.querySelector(".attraction-text");
+        attractionDiv.textContent = response_json.data.name;
+        let categorySpan = document.querySelector(".category-text");
+        categorySpan.textContent = response_json.data.category;
+        let mrtSpan = document.querySelector(".mrt-text");
+        mrtSpan.textContent = response_json.data.mrt;
 
-    // render text in the top-right div
-    let attractionDiv = document.querySelector(".attraction-text");
-    attractionDiv.textContent = response_json.data.name;
-    let categorySpan = document.querySelector(".category-text");
-    categorySpan.textContent = response_json.data.category;
-    let mrtSpan = document.querySelector(".mrt-text");
-    mrtSpan.textContent = response_json.data.mrt;
+        // render images for image scroll
+        console.log("Total images received:", response_json.data.images.length);
 
-    // render images for image scroll
-    console.log("Total images received:", response_json.data.images.length);
+        // add arrows if > 1 picture
+        if (response_json.data.images.length > 1){
+            console.log("Adding arrows...");
 
-    // add arrows if > 1 picture
-    if (response_json.data.images.length > 1){
-        console.log("Adding arrows...");
+            let pictureDiv = document.querySelector(".picture");
+            let dotContainer = document.querySelector(".dot-button-container");
 
+            const newLeftArrowImage = document.createElement("img");
+            newLeftArrowImage.src="../static/images/button_left_noborder.png"
+            const newLeftArrowButton = document.createElement("button");
+            newLeftArrowButton.className = "attraction-scroll-btn left-btn";
+            newLeftArrowButton.id = "attraction-scroll-left";
+            newLeftArrowButton.addEventListener('click', function(){
+                plusSlides(-1);
+            });
+            newLeftArrowButton.appendChild(newLeftArrowImage);
+            pictureDiv.insertBefore(newLeftArrowButton, dotContainer);
+
+            const newRightArrowImage = document.createElement("img");
+            newRightArrowImage.src="../static/images/button_right_noborder.png"
+            const newRightArrowButton = document.createElement("button");
+            newRightArrowButton.className = "attraction-scroll-btn right-btn";
+            newRightArrowButton.id = "attraction-scroll-right";
+            newRightArrowButton.addEventListener('click', function(){
+                plusSlides(1);
+            });
+            newRightArrowButton.appendChild(newRightArrowImage);
+            pictureDiv.insertBefore(newRightArrowButton, dotContainer);
+        }
+
+        // add pictures
+        for (let i=0; i<response_json.data.images.length;i++){
+            // console.log("Preloading image...")
+            // const preloadImage = new Image();
+            // preloadImage.src = response_json.data.images[i];
+
+            console.log("Loading image...");
+            let pictureDiv = document.querySelector(".picture");
+            const newPictureDiv = document.createElement("div");
+            newPictureDiv.className = "slides-picture";
+            const newPictureImg = document.createElement("img");
+            newPictureImg.src = response_json.data.images[i];
+            newPictureDiv.appendChild(newPictureImg);
+
+            // console.log("Picture div check:", pictureDiv);
+            // below method adds in the opposite order...
+            // pictureDiv.prepend(newPictureDiv);
+            
+            // below method adds in the correct order
+            let dotContainer = document.querySelector(".dot-button-container");
+            pictureDiv.insertBefore(newPictureDiv, dotContainer);
+            // console.log("Added picture div!");
+
+            // Add selection dots
+            const newDotSpan = document.createElement("span");
+            newDotSpan.className = "dot-button";
+            newDotSpan.addEventListener('click', function(){
+                slideIndex = i;
+                showSlides(slideIndex);
+            });
+
+            dotContainer.append(newDotSpan);
+        }
         let pictureDiv = document.querySelector(".picture");
-        let dotContainer = document.querySelector(".dot-button-container");
+        console.log("picture div check:", pictureDiv);
 
-        const newLeftArrowImage = document.createElement("img");
-        newLeftArrowImage.src="../static/images/button_left_noborder.png"
-        const newLeftArrowButton = document.createElement("button");
-        newLeftArrowButton.className = "attraction-scroll-btn left-btn";
-        newLeftArrowButton.id = "attraction-scroll-left";
-        newLeftArrowButton.addEventListener('click', function(){
-            plusSlides(-1);
-        });
-        newLeftArrowButton.appendChild(newLeftArrowImage);
-        pictureDiv.insertBefore(newLeftArrowButton, dotContainer);
-
-        const newRightArrowImage = document.createElement("img");
-        newRightArrowImage.src="../static/images/button_right_noborder.png"
-        const newRightArrowButton = document.createElement("button");
-        newRightArrowButton.className = "attraction-scroll-btn right-btn";
-        newRightArrowButton.id = "attraction-scroll-right";
-        newRightArrowButton.addEventListener('click', function(){
-            plusSlides(1);
-        });
-        newRightArrowButton.appendChild(newRightArrowImage);
-        pictureDiv.insertBefore(newRightArrowButton, dotContainer);
-    }
-
-    // add pictures
-    for (let i=0; i<response_json.data.images.length;i++){
-        // console.log("Preloading image...")
-        // const preloadImage = new Image();
-        // preloadImage.src = response_json.data.images[i];
-
-        console.log("Loading image...");
-        let pictureDiv = document.querySelector(".picture");
-        const newPictureDiv = document.createElement("div");
-        newPictureDiv.className = "slides-picture";
-        const newPictureImg = document.createElement("img");
-        newPictureImg.src = response_json.data.images[i];
-        newPictureDiv.appendChild(newPictureImg);
-
-        // console.log("Picture div check:", pictureDiv);
-        // below method adds in the opposite order...
-        // pictureDiv.prepend(newPictureDiv);
+        // add booking button listener
+        const bookingButton = document.querySelector(".booking-button");
+        bookingButton.addEventListener("click", bookAttraction);
         
-        // below method adds in the correct order
-        let dotContainer = document.querySelector(".dot-button-container");
-        pictureDiv.insertBefore(newPictureDiv, dotContainer);
-        // console.log("Added picture div!");
-
-        // Add selection dots
-        const newDotSpan = document.createElement("span");
-        newDotSpan.className = "dot-button";
-        newDotSpan.addEventListener('click', function(){
-            slideIndex = i;
-            showSlides(slideIndex);
-        });
-
-        dotContainer.append(newDotSpan);
     }
-    let pictureDiv = document.querySelector(".picture");
-    console.log("picture div check:", pictureDiv);
+
 }
 
 // Show a particular slide
@@ -140,13 +147,17 @@ function showSlides(index){
     let dots = document.querySelectorAll(".dot-button");
     let totalSlides = slides.length;
 
-    if (index < 0){
-        // positive number for mod(n,m) when n<0 in JS: mod(n,m) = ((n % m) + m) % m
-        index = ((index % totalSlides) + totalSlides) % totalSlides;
-    }
-    else if (index >= totalSlides){
-        index %= totalSlides;
-    }
+    // positive number for mod(n,m) when n<0 in JS: mod(n,m) = ((n % m) + m) % m
+    // actually, this works for both negative AND positive values!
+    index = ((index % totalSlides) + totalSlides) % totalSlides;
+
+    // if (index < 0){
+    //     // positive number for mod(n,m) when n<0 in JS: mod(n,m) = ((n % m) + m) % m
+    //     index = ((index % totalSlides) + totalSlides) % totalSlides;
+    // }
+    // else if (index >= totalSlides){
+    //     index %= totalSlides;
+    // }
     // console.log("total slides:", totalSlides);
     // console.log("index:", index);
 
@@ -188,6 +199,47 @@ function initializeTourPrice(){
             document.querySelector("#tour-price").textContent = "2500";
         }
     });    
+}
+
+async function bookAttraction(event){
+    event.preventDefault();
+    //先組合出上面的JSON
+    let bookingData = {};
+    bookingData["attractionId"] = parseInt(attractionID);
+    bookingData["date"] = document.querySelector("#travel_date").value;
+    bookingData["time"] = document.querySelector("input[name=timeslot]:checked").value;
+    bookingData["price"] = parseInt(document.querySelector("#tour-price").textContent);
+    console.log("Booking data check:", bookingData);
+    const bookingDataisEmpty = !Object.values(bookingData).every(x => x !== null && x !== '');  
+    console.log("Empty check:", bookingDataisEmpty);
+    
+    //再用這個JSON fetch API
+    if (bookingDataisEmpty){
+        alert("請填入所有欄位！");
+        return false;
+    }
+    else{
+        let signinStatusToken = window.localStorage.getItem('token');
+        const bookingResponse = await fetch ("/api/booking",{
+            method: "post",
+            body: JSON.stringify(bookingData),
+            headers: new Headers({ "Content-Type":"application/json", "Authorization": `Bearer ${signinStatusToken}` })
+        });
+        const bookingResponseJson = await bookingResponse.json();
+        console.log(bookingResponseJson);
+
+        if (!bookingResponseJson.ok){
+            console.log("Booking unsuccessful, error message:", bookingResponseJson.message);
+            // insert dynamic text here
+            return false;
+        }
+        else{
+            console.log("Booking Successful!");
+            // insert dynamic text here
+            setTimeout(() => window.location.pathname = "/booking", 3000);
+            return true;
+        }
+    }
 }
 
 // Initialize Attraction Page DOM

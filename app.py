@@ -7,12 +7,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from pydantic import BaseModel, constr, EmailStr
-from typing import Annotated
+from typing import Annotated, Literal
 from annotated_types import MinLen
 import mysql.connector
 import os
 import datetime
-from datetime import *
+from datetime import timedelta, date, datetime, timezone
+import json
+import traceback
+import logging
 
 # database parameters
 
@@ -79,6 +82,13 @@ class UserSigninDataOut(BaseModel):
 class TokenOut(BaseModel):
     token: str
 
+# Classes for "Booking" API
+class BookingFormData(BaseModel):
+    attractionId: int
+    date: date
+    time: Literal["morning", "afternoon"]
+    price: int
+
 # Tags for SwaggerUI
 
 tags_metadata = [
@@ -93,6 +103,10 @@ tags_metadata = [
     {
         "name": "User",
         "description": "APIs for user CRUD and authentication"
+    },
+    {
+        "name": "Booking",
+        "description": "APIs for booking a new tour"
     },
 ]
 
@@ -182,7 +196,8 @@ def check_user_signin_status(token_data):
         result = {}
         result["data"] = jwt.decode(token_data.token, secret_key, algorithms="HS256")
         print("Data:", result)
-        return result
+        # return result #Testing 20240621
+        return JSONResponse(status_code=200, content=result)
     except ExpiredSignatureError:
         print("ExpiredSignatureError")
         return JSONResponse(status_code=401, content={"data": None})
@@ -196,6 +211,17 @@ def check_user_signin_status(token_data):
         print("Other exceptions")
         return JSONResponse(status_code=401, content={"data": None})
 
+# authenticate user, but return a boolean
+def check_user_signin_status_return_data(token_data):
+    try:
+        decode_result = jwt.decode(token_data.token, secret_key, algorithms="HS256")
+        # decode success and there is an id in the result (indicating a real user)
+        if decode_result["id"]:
+            return decode_result
+        else:
+            return False
+    except Exception:
+        return False
 
 def get_token_header(authorization: str = Header(...)) -> TokenOut:
     stripped_token = authorization[len("Bearer "):]
@@ -361,10 +387,124 @@ async def signin(sign_in_credentials: SigninFormData, request: Request, response
 
 # check sign in status(predicted usage: on every page). response model integration was helped by ChatGPT
 @app.get("/api/user/auth", response_model=UserSigninDataOut, summary="取得當前登入的會員資訊", tags=["User"])
-async def checkSignInStatus(request: Request, response: Response, token_data: TokenOut = Depends(get_token_header)):
+async def check_signin_status(request: Request, response: Response, token_data: TokenOut = Depends(get_token_header)):
     return check_user_signin_status(token_data)
     
+# "Booking" API routes
 
+
+@app.get("/api/booking", summary="取得尚未確認下單的預定行程", tags=["Booking"])
+async def get_current_cart(request: Request, response: Response, token_data: TokenOut = Depends(get_token_header)):
+    print(check_user_signin_status_return_data(token_data))
+    signin_status = check_user_signin_status_return_data(token_data)
+    if not check_user_signin_status_return_data(token_data):
+        print("hit route 1")
+        return JSONResponse(status_code=403, content={"error":True})
+    # 驗證OK
+    else:
+        try:
+            print("hit route 2")
+            website_db = mysql.connector.connect(
+                host=db_host, user=db_user, password=db_pw, database=db_database)
+            website_db_cursor = website_db.cursor()
+            var1 = signin_status["id"]
+                        
+            print("Fetching data")
+            # cmd = "SELECT attraction_id, date, time, price FROM booking_cart WHERE member_id = %s"  
+            # Please experiment with stuff before submitting!          
+            cmd = "SELECT booking_cart.attraction_id, date, time, price, attraction.id, attraction.name, attraction.address, image.url FROM booking_cart LEFT JOIN attraction ON booking_cart.attraction_id = attraction.id LEFT JOIN image ON booking_cart.attraction_id = image.attraction_id WHERE booking_cart.member_id = %s LIMIT 1"
+            website_db_cursor.execute(cmd,(var1,))
+            result = website_db_cursor.fetchone()
+            print(result)
+            if not result:
+                print("No booking found...")
+                return {"data": None}
+            else:
+                print("Found booking data!")
+                response_data={}
+                response_data["date"] = result[1]
+                response_data["time"] = result[2]
+                response_data["price"] = result[3]
+                
+                response_data["attraction"]={}
+                response_data["attraction"]["id"] = result[4]
+                response_data["attraction"]["name"] = result[5]
+                response_data["attraction"]["address"] = result[6]
+                response_data["attraction"]["image"] = result[7]
+                
+                return {"data": response_data}
+        
+        # Handle exceptions
+        except Exception:
+            traceback.print_exc()
+            logging.error(f"Exception occurred: {Exception}")
+            return JSONResponse(status_code=422, content={"error":True})
+
+@app.post("/api/booking", summary="建立新的預定行程", tags=["Booking"])
+async def add_trip_to_cart(booking_details: BookingFormData, request: Request, response: Response, token_data: TokenOut = Depends(get_token_header)):
+    print(check_user_signin_status_return_data(token_data))
+    signin_status = check_user_signin_status_return_data(token_data)
+    if not check_user_signin_status_return_data(token_data):
+        print("hit route 1")
+        return JSONResponse(status_code=403, content={"error":True})
+    # 驗證OK
+    else:
+        try:
+            print("hit route 2")
+            website_db = mysql.connector.connect(
+                host=db_host, user=db_user, password=db_pw, database=db_database)
+            website_db_cursor = website_db.cursor()
+            var1 = signin_status["id"]
+            var2 = booking_details.attractionId
+            var3 = booking_details.date
+            var4 = booking_details.time
+            var5 = booking_details.price
+                        
+            print("Deleting old data")   
+            cmd = "DELETE FROM booking_cart WHERE member_id = %s"
+            website_db_cursor.execute(cmd,(var1,))
+            website_db.commit()
+
+            print("Adding newest data")
+            cmd = "INSERT INTO booking_cart (member_id, attraction_id, date, time, price) VALUES (%s, %s, %s, %s, %s)"
+            website_db_cursor.execute(cmd,(var1, var2, var3, var4, var5))
+            website_db.commit()
+
+            return {"ok": True}
+        
+        # Handle exceptions
+        except Exception:
+            traceback.print_exc()
+            logging.error(f"Exception occurred: {Exception}")
+            return JSONResponse(status_code=422, content={"error":True})
+
+@app.delete("/api/booking", summary="刪除目前的預定行程", tags=["Booking"])
+async def delete_trip_from_cart(request: Request, response: Response, token_data: TokenOut = Depends(get_token_header)):
+    print(check_user_signin_status_return_data(token_data))
+    signin_status = check_user_signin_status_return_data(token_data)
+    if not check_user_signin_status_return_data(token_data):
+        return JSONResponse(status_code=403, content={"error":True})
+    # 驗證OK
+    else:
+        try:
+            print("hit route 2")
+            website_db = mysql.connector.connect(
+                host=db_host, user=db_user, password=db_pw, database=db_database)
+            website_db_cursor = website_db.cursor()
+            var1 = signin_status["id"]
+                        
+            print("Deleting data")   
+            cmd = "DELETE FROM booking_cart WHERE member_id = %s"
+            website_db_cursor.execute(cmd,(var1,))
+            website_db.commit()
+
+            return {"ok": True}
+        
+        except Exception:
+            traceback.print_exc()
+            logging.error(f"Exception occurred: {Exception}")
+            return JSONResponse(status_code=422, content={"error":True})
+    
 
 # exception handlers for 422 and 500
 @app.exception_handler(RequestValidationError)

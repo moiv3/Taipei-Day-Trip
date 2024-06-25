@@ -601,6 +601,10 @@ input:checked + .radio-newlycreated-button {
     max-width: 100%;
 }
 
+.booking-main-container{
+    max-width: 100%;
+}
+
 }
 @media screen and (max-width:750px){
 .search-bar {
@@ -791,4 +795,103 @@ button {
     box-sizing: border-box;
     border: 1px solid #CCCCCC;
     border-radius: 6px;
+}
+
+/* booking page zone */
+
+.booking-main-container{
+    /* 有RWD設定，參見最下方 */
+    max-width: 1200px;
+    margin: 54px auto 0 auto; /* 54px navbar 40px margin */
+}
+
+.booking-headline{
+    margin: 94px 100px 0px 100px;
+}
+
+.booking-attraction-container{
+    /* border: 1px red solid; */
+    margin: 30px 110px 40px 110px;
+    display: flex;
+    position: relative;
+}
+
+.booking-attraction-image-container{    
+    height: 200px; /* take note of RWD below */
+    /* width: 100%; */
+    /* object-fit: cover; */
+    padding: 0 8px 0 8px;
+}
+
+.booking-attraction-image{    
+    height: 100%;
+    /* width: 100%; */
+    /* object-fit: cover; */
+    min-width: 0;
+}
+
+.booking-attraction-text{
+    padding: 0 0 0 22px;
+}
+
+.booking-attraction-text > div{
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+
+.booking-attraction-text > div:first-of-type{
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+
+.booking-attraction-delete-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.booking-data-container{
+    /* border: 1px red solid; */
+    margin: 40px 110px 40px 110px;
+}
+
+.booking-data-container > div{
+    /* border: 1px red solid; */
+    margin-bottom: 15px;
+}
+
+.booking-data-container > div:last-child{
+    margin-bottom: 0;
+}
+
+.booking-input {
+    box-sizing: border-box;
+    width: 200px;
+    height: 38px;
+    border: 2px 2px 2px 2px;
+    border-color: #E8E8E8;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    background-color: white;
+    font-size: 16px;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+.booking-confirm-container{
+    /* border: 1px red solid; */
+    margin: 40px 110px 40px 110px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content:flex-start;
+
+}
+
+.booking-button{
+    margin-top: 25px;
+}
+
+#booking-form-id{
+    display: none;
 }

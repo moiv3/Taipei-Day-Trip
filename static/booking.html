@@ -3,9 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
   <title>Booking</title>
 </head>
 <body>
-  
+  <div class="navbar-background">
+    <div class="navbar-container">
+      <a href="/"><div class="navbar-title cyan-70 header-2">台北一日遊</div></a>
+      <div class="navbar-topright-container">
+        <button class="navbar-button gray-70 body booking-button-topright">預定行程</button>
+        <button class="navbar-button gray-70 body signin-button"></button><!--renders 登入/註冊 or 登出系統-->
+      </div>
+    </div>
+    <div class="hr attraction-header-hr"></div>
+  </div>
+
+  <div class="booking-main-container">
+    <div class="booking-headline button bold gray-70">您好，<span class="booking-attraction-content body" id="booking-name">{name}</span>，待預定的行程如下：</div>
+    
+  <!-- <div class="booking-main-container"> -->
+
+    <!-- <div class="booking-headline button bold gray-70">您好，<span class="booking-attraction-content body" id="booking-name">{name}</span>，待預定的行程如下：</div>
+
+    <div class="booking-attraction-container">
+      <div class="booking-attraction-image-container">
+        <img class="booking-attraction-image" src="../static/images/bookingtest.png">
+      </div>
+
+      <div class="booking-attraction-text">
+        <div class="body bold cyan-70">台北一日遊：<span class="booking-attraction-content body" id="booking-attraction">{attraction}</span></div>
+        <div class="body bold gray-70">日期：<span class="booking-attraction-content body" id="booking-date">{date}</span></div>
+        <div class="body bold gray-70">時間：<span class="booking-attraction-content body" id="booking-time">{time}</span></div>
+        <div class="body bold gray-70">費用：<span class="booking-attraction-content body" id="booking-price">{price}</span></div>
+        <div class="body bold gray-70">地點：<span class="booking-attraction-content body" id="booking-address">{address}</span></div>
+      </div>
+
+      <div class="booking-attraction-delete-icon">
+        <img src="../static/images/delete.png">
+      </div>
+    </div> -->
+    
+    <form id="booking-form-id" name="booking-form-name">
+      <div class="hr"></div>
+      <div class="booking-data-container">
+        <div class="button bold gray-70">您的聯絡資訊</div>
+        <div class="body gray-70">聯絡姓名：<input class="booking-input" type="text"></div>
+        <div class="body gray-70">聯絡信箱：<input class="booking-input" type="email"></div>
+        <div class="body gray-70">手機號碼：<input class="booking-input" type="number"></div>
+        <div class="body bold gray-70">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+      </div>
+      <div class="hr"></div>
+      <div class="booking-data-container">
+        <div class="button bold gray-70">信用卡付款資訊</div>
+        <div class="body gray-70">卡片號碼：<input class="booking-input" type="text" placeholder="**** **** **** ****"></div>
+        <div class="body gray-70">過期時間：<input class="booking-input" type="date" placeholder="MM/YY"></div>
+        <div class="body gray-70">驗證密碼：<input class="booking-input" type="number" placeholder="CVV"></div>
+      </div>
+      <div class="hr"></div>    
+
+      <div class="booking-confirm-container">
+        <div class="body bold gray-70">總價：新台幣{price}元</div>
+        <button class="booking-button btn white">確認訂購並付款</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="footer body bold">COPYRIGHT &copy; 2024 台北一日遊</div>
+  <script src="../static/scripts/script_general.js"></script>
+  <script src="../static/scripts/script_booking.js"></script>
 </body>
 </html>
