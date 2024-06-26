@@ -135,7 +135,18 @@ async function getAttractionPage(attractionID){
 
         // add booking button listener
         const bookingButton = document.querySelector(".booking-button");
-        bookingButton.addEventListener("click", bookAttraction);
+        let tokenStatus = await checkToken();
+        console.log("Signin status:", tokenStatus);
+        if (tokenStatus){
+            bookingButton.addEventListener("click", bookAttraction);
+        }
+        // else activateCurtain2 defined in script_general.js
+        else{
+            bookingButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                activateCurtain2();
+            });
+        }
         
     }
 
@@ -203,21 +214,22 @@ function initializeTourPrice(){
 
 async function bookAttraction(event){
     event.preventDefault();
-    //先組合出上面的JSON
+    // get the json from the fields in page
     let bookingData = {};
     bookingData["attractionId"] = parseInt(attractionID);
     bookingData["date"] = document.querySelector("#travel_date").value;
     bookingData["time"] = document.querySelector("input[name=timeslot]:checked").value;
     bookingData["price"] = parseInt(document.querySelector("#tour-price").textContent);
     console.log("Booking data check:", bookingData);
+
+    // check if all fields are entered
     const bookingDataisEmpty = !Object.values(bookingData).every(x => x !== null && x !== '');  
     console.log("Empty check:", bookingDataisEmpty);
-    
-    //再用這個JSON fetch API
     if (bookingDataisEmpty){
         alert("請填入所有欄位！");
         return false;
     }
+    // fetch API
     else{
         let signinStatusToken = window.localStorage.getItem('token');
         const bookingResponse = await fetch ("/api/booking",{
@@ -230,13 +242,21 @@ async function bookAttraction(event){
 
         if (!bookingResponseJson.ok){
             console.log("Booking unsuccessful, error message:", bookingResponseJson.message);
-            // insert dynamic text here
+            bookingStatusTicker = document.querySelector("#booking-status-ticker");
+            bookingStatusTicker.textContent = "預訂失敗，請再試一次或重新整理本頁";
+            bookingStatusTicker.style.display = "inline-block";            
+            setTimeout(() => {
+                bookingStatusTicker.textContent = "";
+                bookingStatusTicker.style.display = "none";
+            }, 2000);
             return false;
         }
         else{
             console.log("Booking Successful!");
-            // insert dynamic text here
-            setTimeout(() => window.location.pathname = "/booking", 3000);
+            bookingStatusTicker = document.querySelector("#booking-status-ticker");
+            bookingStatusTicker.textContent = "已成功預訂！即將導向至預訂頁面...";
+            bookingStatusTicker.style.display = "inline-block";
+            setTimeout(() => window.location.pathname = "/booking", 2000);
             return true;
         }
     }

@@ -6,7 +6,7 @@ function renderBookingData(bookingStatusJson){
         // alert("Fetched data says there is no booking!!!!!");        
         const bookingMainContainer = document.querySelector(".booking-main-container");
         const noBookingText = document.createElement("div");
-        noBookingText.classList = "booking-data-container body gray-70";
+        noBookingText.classList = "booking-text body gray-70";
         noBookingText.textContent = "目前沒有任何待預訂的行程";
         const bookingForm = document.querySelector("#booking-form-id");
         bookingMainContainer.insertBefore(noBookingText, bookingForm);
@@ -26,12 +26,12 @@ function renderBookingData(bookingStatusJson){
         // bodyElement.insertBefore()
         // bookingMainContainer.appendChild();
 
-        //image
+        // image
         const bookingAttractionImageContainer = document.createElement("div");
         bookingAttractionImageContainer.classList = "booking-attraction-image-container";
         const bookingAttractionImage = document.createElement("img");
         bookingAttractionImage.classList = "booking-attraction-image";
-        // TODO: dynamically render image!!! NOT YET TESTED
+        // SQL returns only 1 image so the first image is used
         bookingAttractionImage.src = bookingStatusJson.data.attraction.image;
         bookingAttractionImageContainer.appendChild(bookingAttractionImage);
         bookingAttractionContainer.appendChild(bookingAttractionImageContainer);
@@ -66,7 +66,7 @@ function renderBookingData(bookingStatusJson){
         const bookingAttractionTextTimeInner = document.createElement("span");
         bookingAttractionTextTimeInner.classList = "booking-attraction-content body";
         bookingAttractionTextTimeInner.id = "booking-time";
-        bookingAttractionTextTimeInner.textContent = bookingStatusJson.data.time;
+        bookingAttractionTextTimeInner.textContent = bookingStatusJson.data.time === "morning" ? "早上" : "下午";
 
         // attraction price
         const  bookingAttractionTextPriceOuter = document.createElement("div");
@@ -75,7 +75,7 @@ function renderBookingData(bookingStatusJson){
         const bookingAttractionTextPriceInner = document.createElement("span");
         bookingAttractionTextPriceInner.classList = "booking-attraction-content body";
         bookingAttractionTextPriceInner.id = "booking-price";
-        bookingAttractionTextPriceInner.textContent = bookingStatusJson.data.price;
+        bookingAttractionTextPriceInner.textContent = "新台幣" + bookingStatusJson.data.price + "元";
 
         // attraction address
         const bookingAttractionTextAddressOuter = document.createElement("div");
@@ -107,15 +107,14 @@ function renderBookingData(bookingStatusJson){
         bookingAttractionDeleteIcon.src = "../static/images/delete.png";
         bookingAttractionDeleteIconContainer.appendChild(bookingAttractionDeleteIcon);
         bookingAttractionDeleteIconContainer.addEventListener("click", deleteBooking);
-
         bookingAttractionContainer.appendChild(bookingAttractionDeleteIconContainer);
+
+        // update total price
+        const totalPriceText = document.querySelector("#total-price");
+        totalPriceText.textContent = bookingStatusJson.data.price;
+
         return true;
     }
-}
-
-function togglePaymentInput(){
-    document.querySelector("#booking-form-id").style.display = "block";
-    return;
 }
 
 // get signed in user data
@@ -127,7 +126,7 @@ async function initializeSignedInUserData(){
         
         const renderResult = renderBookingData(bookingStatusJson);
         if (renderResult){
-            togglePaymentInput();
+            document.querySelector("#booking-form-id").style.display = "block";
         }
     }
     else{
@@ -152,21 +151,83 @@ async function fetchBookingApi(){
 
 // fetch deleteBooking API
 async function deleteBooking(){
-    let signinStatusToken = window.localStorage.getItem('token');
-    deleteStatus = await fetch("./api/booking",{
-        method: "delete",        
-        headers: {Authorization: `Bearer ${signinStatusToken}`}
-    });
-    deleteStatusJson = await deleteStatus.json();
-    console.log(deleteStatusJson);
-    if (deleteStatusJson.error){
-        console.log("Delete unsuccessful, message:", deleteStatusJson.message);
-        // add dynamic text here
+    let confirmDelete = confirm("是否確認刪除此預定行程？");
+    if (!confirmDelete){
+        return false;
     }
-    else{        
-        console.log("Delete successful! Refreshing in 3s...");
-        // add dynamic text here
-        setTimeout(() => window.location.reload(), 3000);
+    else{
+        let signinStatusToken = window.localStorage.getItem('token');
+        deleteStatus = await fetch("./api/booking",{
+            method: "delete",        
+            headers: {Authorization: `Bearer ${signinStatusToken}`}
+        });
+        deleteStatusJson = await deleteStatus.json();
+        console.log(deleteStatusJson);
+        if (deleteStatusJson.error){
+            console.log("Delete unsuccessful, message:", deleteStatusJson.message);
+            bookingStatusTicker = document.querySelector("#booking-status-ticker");
+            bookingStatusTicker.textContent = "刪除失敗，請再試一次或重新整理本頁";
+            bookingStatusTicker.style.display = "block";            
+            setTimeout(() => {
+                bookingStatusTicker.textContent = "";
+                bookingStatusTicker.style.display = "none";
+            }, 2000);
+        }
+        else{        
+            console.log("Delete successful! Refreshing in 2s...");
+            bookingStatusTicker = document.querySelector("#booking-status-ticker");
+            bookingStatusTicker.textContent = "已成功刪除！即將重新整理...";
+            bookingStatusTicker.style.display = "block";
+            setTimeout(() => window.location.reload(), 2000);
+        }
+        return deleteStatusJson;
     }
-    return deleteStatusJson;
 }
+
+function addBookingButtonListener(){
+    const bookingButton = document.querySelector("#confirm-booking-button");
+    bookingButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        console.log("Booking button clicked!");
+        alert("感謝您的使用，已訂購完成！\n（請注意，此網站為教學用途，沒有實際交易行為。）")
+    })
+}
+addBookingButtonListener();
+
+function addCreditCardInputFormatter(){
+    // code from various websites and ChatGPT. very very clever...
+    // 總之，每輸入一次就強制用運算過的結果覆蓋掉原本的輸入
+    creditCardNumber = document.querySelector("#credit-card-number");
+    creditCardExpiry = document.querySelector("#credit-card-expiry");
+    // card number part
+    creditCardNumber.addEventListener("input", (event) => {
+        // define raw and formatted values. Regex /\D/g means all non-digit characters & all matches.
+        let rawValue = event.target.value.replace(/\D/g, '');
+        // define as a string
+        let formattedValue = '';
+
+        // calculate formatted value
+        for (let i = 0; i < rawValue.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formattedValue += ' ';
+            }
+            formattedValue += rawValue[i];
+        }
+        // replace what is in the input box with the formatted value after EVERY input action (including key press, backspace, delete, paste...)
+        event.target.value = formattedValue;
+        // this line for testing purposes only
+        // console.log(rawValue, formattedValue);
+    });
+
+    // card expiry month part
+    creditCardExpiry.addEventListener("input", (event) => {
+        let expiryValue = event.target.value.replace(/\D/g, '');
+        if (expiryValue.length > 2) {
+            expiryValue = expiryValue.slice(0, 2) + '/' + expiryValue.slice(2, 4);
+        }
+    event.target.value = expiryValue;
+    // this line for testing purposes only
+    // console.log(expiryValue);
+});
+}
+addCreditCardInputFormatter();

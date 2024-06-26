@@ -213,8 +213,8 @@ async function signin(e){
         console.log("Successfully signed in!");
         window.localStorage.setItem('token', signinResponseJSON.token);
 
-        //test function
-        setCookie('token', signinResponseJSON.token, 7);
+        // test function to use cookies, it is NOT WORKING yet!
+        // setCookie('token', signinResponseJSON.token, 7);
 
         const signinResponseElement = document.querySelector(".signin-response-text");
         signinResponseElement.textContent = "登入成功！即將重新整理畫面...";
@@ -295,7 +295,7 @@ async function initializeSignedInElements(){
         const buttonContainer = document.querySelector(".navbar-topright-container");
         buttonContainer.appendChild(newButton);
 
-        // handle booking button        
+        // handle booking button. in this case, booking button has redirect function
         let bookingButton = document.querySelector(".booking-button-topright");
         bookingButton.addEventListener("click", (event) => {
             window.location.href = "/booking";
@@ -308,6 +308,7 @@ async function initializeSignedInElements(){
         signinButton.textContent = "登入/註冊";
         signinButton.addEventListener("click", activateCurtain2);
 
+        // handle booking button. in this case, booking button has the same function as signin/signup button
         let bookingButton = document.querySelector(".booking-button-topright");
         bookingButton.addEventListener("click", activateCurtain2);
     }
@@ -324,14 +325,14 @@ function initializeSequenceGeneral(){
 initializeSequenceGeneral();
 
 // test function: setCookie
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    //check GPT log for more parameters, testing only
-    document.cookie = name + "=" + (value || "") + expires + "; path=/; secure; samesite=strict; HttpOnly";
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
+// function setCookie(name, value, days) {
+//     let expires = "";
+//     if (days) {
+//         const date = new Date();
+//         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+//         expires = "; expires=" + date.toUTCString();
+//     }
+//     //check GPT log for more parameters, testing only
+//     document.cookie = name + "=" + (value || "") + expires + "; path=/; secure; samesite=strict; HttpOnly";
+//     document.cookie = name + "=" + (value || "") + expires + "; path=/";
+// }

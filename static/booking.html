@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
-  <title>Booking</title>
+  <title>確認預定行程 - WeHelp台北一日遊</title>
 </head>
 <body>
   <div class="navbar-background">
@@ -22,7 +22,7 @@
   </div>
 
   <div class="booking-main-container">
-    <div class="booking-headline button bold gray-70">您好，<span class="booking-attraction-content body" id="booking-name">{name}</span>，待預定的行程如下：</div>
+    <div class="booking-headline button bold gray-70">您好，<span class="booking-attraction-content body" id="booking-name">{name}</span>，待預訂的行程如下：</div>
     
   <!-- <div class="booking-main-container"> -->
 
@@ -45,28 +45,30 @@
         <img src="../static/images/delete.png">
       </div>
     </div> -->
-    
     <form id="booking-form-id" name="booking-form-name">
+      <!-- 預定狀態指示用 -->
+      <div class="button bold cyan-70" id="booking-status-ticker"></div>
+      
       <div class="hr"></div>
       <div class="booking-data-container">
         <div class="button bold gray-70">您的聯絡資訊</div>
         <div class="body gray-70">聯絡姓名：<input class="booking-input" type="text"></div>
         <div class="body gray-70">聯絡信箱：<input class="booking-input" type="email"></div>
-        <div class="body gray-70">手機號碼：<input class="booking-input" type="number"></div>
+        <div class="body gray-70">手機號碼：<input class="booking-input" type="text" pattern="[0-9]*" inputmode="numeric"></div>
         <div class="body bold gray-70">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
       </div>
       <div class="hr"></div>
       <div class="booking-data-container">
         <div class="button bold gray-70">信用卡付款資訊</div>
-        <div class="body gray-70">卡片號碼：<input class="booking-input" type="text" placeholder="**** **** **** ****"></div>
-        <div class="body gray-70">過期時間：<input class="booking-input" type="date" placeholder="MM/YY"></div>
-        <div class="body gray-70">驗證密碼：<input class="booking-input" type="number" placeholder="CVV"></div>
+        <div class="body gray-70">卡片號碼：<input class="booking-input" id="credit-card-number" type="text" placeholder="**** **** **** ****" maxlength="19" pattern="[0-9]*" inputmode="numeric"></div>
+        <div class="body gray-70">過期時間：<input class="booking-input" id="credit-card-expiry" type="text" placeholder="MM/YY" maxlength="5" pattern="[0-9]*" inputmode="numeric"></div>
+        <div class="body gray-70">驗證密碼：<input class="booking-input" id="credit-card-cvv" type="text" placeholder="CVV" maxlength="3" pattern="[0-9]*" inputmode="numeric"></div>
       </div>
       <div class="hr"></div>    
 
       <div class="booking-confirm-container">
-        <div class="body bold gray-70">總價：新台幣{price}元</div>
-        <button class="booking-button btn white">確認訂購並付款</button>
+        <div class="body bold gray-70">總價：新台幣<span id="total-price">{price}</span>元</div>
+        <button class="booking-button btn white" id="confirm-booking-button">確認訂購並付款</button>
       </div>
 
     </form>
