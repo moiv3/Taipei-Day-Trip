@@ -135,7 +135,24 @@ async function initializeSignedInUserData(){
     } 
 }
 
-initializeSignedInUserData();
+// initializeSignedInUserData();
+
+// get signed in user data
+async function initializeSignedInUserDataNew(tokenStatus){
+    if (tokenStatus){     
+        document.querySelector("#booking-name").textContent = tokenStatus.name;
+        bookingStatusJson = await fetchBookingApi();
+        
+        const renderResult = renderBookingData(bookingStatusJson);
+        if (renderResult){
+            document.querySelector("#booking-form-id").style.display = "block";
+        }
+    }
+    else{
+        alert("Signed out!");
+        window.location.pathname = "/";
+    } 
+}
 
 // fetch booking API
 async function fetchBookingApi(){
@@ -230,4 +247,17 @@ function addCreditCardInputFormatter(){
     // console.log(expiryValue);
 });
 }
-addCreditCardInputFormatter();
+// addCreditCardInputFormatter();
+
+function initializeSequenceBooking(){
+    addEventListener("DOMContentLoaded", async () => {
+        const tokenStatus = await checkToken();
+        console.log("After DOMContentLoaded, token status:", tokenStatus);
+        initializeSignedInElementsNew(tokenStatus);
+        initializeSignedInUserDataNew(tokenStatus);
+        addBookingButtonListener();
+        addCreditCardInputFormatter();
+    })
+    // this space reserved for later
+}
+initializeSequenceBooking();

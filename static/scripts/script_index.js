@@ -265,4 +265,18 @@ async function initializeSequence(){
     initializeObserver();
 }
 
-initializeSequence();
+// initializeSequence();
+
+function initializeSequenceIndex(){
+    addEventListener("DOMContentLoaded", async () => {
+        const tokenStatus = await checkToken();
+        console.log("After DOMContentLoaded, token status:", tokenStatus);
+        initializeSignedInElementsNew(tokenStatus);
+        await initializePage();
+        await initializeHorizontalScroll();
+        initializeSearchBarListener();
+        initializeObserver();
+    })
+    // this space reserved for later
+}
+initializeSequenceIndex();

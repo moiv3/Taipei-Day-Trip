@@ -133,20 +133,20 @@ async function getAttractionPage(attractionID){
         let pictureDiv = document.querySelector(".picture");
         console.log("picture div check:", pictureDiv);
 
-        // add booking button listener
-        const bookingButton = document.querySelector(".booking-button");
-        let tokenStatus = await checkToken();
-        console.log("Signin status:", tokenStatus);
-        if (tokenStatus){
-            bookingButton.addEventListener("click", bookAttraction);
-        }
-        // else activateCurtain2 defined in script_general.js
-        else{
-            bookingButton.addEventListener("click", (event) => {
-                event.preventDefault();
-                activateCurtain2();
-            });
-        }
+        // // add booking button listener
+        // const bookingButton = document.querySelector(".booking-button");
+        // let tokenStatus = await checkToken();
+        // console.log("Signin status:", tokenStatus);
+        // if (tokenStatus){
+        //     bookingButton.addEventListener("click", bookAttraction);
+        // }
+        // // else activateCurtain2 defined in script_general.js
+        // else{
+        //     bookingButton.addEventListener("click", (event) => {
+        //         event.preventDefault();
+        //         activateCurtain2();
+        //     });
+        // }
         
     }
 
@@ -270,6 +270,37 @@ async function initializeAttraction(){
 }
 
 let slideIndex;
-initializeAttraction();
-initializeTourPrice();
+// initializeAttraction();
+// initializeTourPrice();
 
+// test
+
+function initializeSequenceAttraction(){
+    addEventListener("DOMContentLoaded", async () => {
+        const tokenStatus = await checkToken();
+        console.log("After DOMContentLoaded, token status:", tokenStatus);
+        // add correct button (signin or signout) to DOM and their event listeners
+        initializeSignedInElementsNew(tokenStatus);
+        addBookingButtonListener(tokenStatus);
+        await initializeAttraction();
+        initializeTourPrice();
+    })
+    // this space reserved for later
+}
+initializeSequenceAttraction();
+
+// add booking button listener
+function addBookingButtonListener(tokenStatus){
+    console.log("Signin status:", tokenStatus);
+    const bookingButton = document.querySelector(".booking-button");
+    if (tokenStatus){
+        bookingButton.addEventListener("click", bookAttraction);
+    }
+    // else activateCurtain2 defined in script_general.js
+    else{
+        bookingButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            activateCurtain2();
+        });
+    }
+}

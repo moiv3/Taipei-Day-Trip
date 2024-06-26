@@ -314,6 +314,40 @@ async function initializeSignedInElements(){
     }
 }
 
+// only on page load, initialize signin/signup button  //20240627 without fetchingAPI
+async function initializeSignedInElementsNew(tokenStatus){
+    if (tokenStatus){
+        // handle signin button
+        let signinButton = document.querySelector(".signin-button");
+        signinButton.remove();
+        const newButton = document.createElement("button");
+        newButton.textContent = "登出系統";
+        newButton.classList = "navbar-button gray-70 body";
+        newButton.addEventListener("click", (event) => {
+            removeSigninToken()
+        });
+        const buttonContainer = document.querySelector(".navbar-topright-container");
+        buttonContainer.appendChild(newButton);
+
+        // handle booking button. in this case, booking button has redirect function
+        let bookingButton = document.querySelector(".booking-button-topright");
+        bookingButton.addEventListener("click", (event) => {
+            window.location.href = "/booking";
+        });
+
+    }
+    else{
+        // when not logged in, handle signin button and booking button have same function (activate curtain).
+        let signinButton = document.querySelector(".signin-button");
+        signinButton.textContent = "登入/註冊";
+        signinButton.addEventListener("click", activateCurtain2);
+
+        // handle booking button. in this case, booking button has the same function as signin/signup button
+        let bookingButton = document.querySelector(".booking-button-topright");
+        bookingButton.addEventListener("click", activateCurtain2);
+    }
+}
+
 // Initialize sequence, wait for DOMContentLoaded event
 function initializeSequenceGeneral(){
     addEventListener("DOMContentLoaded", () => {
@@ -322,7 +356,7 @@ function initializeSequenceGeneral(){
     })
     // this space reserved for later
 }
-initializeSequenceGeneral();
+// initializeSequenceGeneral();
 
 // test function: setCookie
 // function setCookie(name, value, days) {
