@@ -254,7 +254,7 @@ async function bookAttraction(event){
         else{
             console.log("Booking Successful!");
             bookingStatusTicker = document.querySelector("#booking-status-ticker");
-            bookingStatusTicker.textContent = "已成功預訂！即將導向至預訂頁面...";
+            bookingStatusTicker.textContent = "預訂成功！重新導向中...";
             bookingStatusTicker.style.display = "inline-block";
             setTimeout(() => window.location.pathname = "/booking", 2000);
             return true;

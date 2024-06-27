@@ -46,7 +46,7 @@ function renderBookingData(bookingStatusJson){
         bookingAttractionTextAttractionOuter.classList = "body bold cyan-70";
         bookingAttractionTextAttractionOuter.textContent = "台北一日遊：";
         const bookingAttractionTextAttractionInner = document.createElement("span");
-        bookingAttractionTextAttractionInner.classList = "booking-attraction-content body";
+        bookingAttractionTextAttractionInner.classList = "booking-attraction-content body bold";
         bookingAttractionTextAttractionInner.id = "booking-name";
         bookingAttractionTextAttractionInner.textContent = bookingStatusJson.data.attraction.name;
 
@@ -66,7 +66,7 @@ function renderBookingData(bookingStatusJson){
         const bookingAttractionTextTimeInner = document.createElement("span");
         bookingAttractionTextTimeInner.classList = "booking-attraction-content body";
         bookingAttractionTextTimeInner.id = "booking-time";
-        bookingAttractionTextTimeInner.textContent = bookingStatusJson.data.time === "morning" ? "早上" : "下午";
+        bookingAttractionTextTimeInner.textContent = bookingStatusJson.data.time === "morning" ? "上半天" : "下半天";
 
         // attraction price
         const  bookingAttractionTextPriceOuter = document.createElement("div");
@@ -103,9 +103,9 @@ function renderBookingData(bookingStatusJson){
         // append delete button
         const bookingAttractionDeleteIconContainer = document.createElement("button");
         bookingAttractionDeleteIconContainer.classList = "booking-attraction-delete-icon";
-        const bookingAttractionDeleteIcon = document.createElement("img");
-        bookingAttractionDeleteIcon.src = "../static/images/delete.png";
-        bookingAttractionDeleteIconContainer.appendChild(bookingAttractionDeleteIcon);
+        // const bookingAttractionDeleteIcon = document.createElement("img");
+        // bookingAttractionDeleteIcon.src = "../static/images/delete.png";
+        // bookingAttractionDeleteIconContainer.appendChild(bookingAttractionDeleteIcon);
         bookingAttractionDeleteIconContainer.addEventListener("click", deleteBooking);
         bookingAttractionContainer.appendChild(bookingAttractionDeleteIconContainer);
 

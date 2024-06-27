@@ -589,6 +589,12 @@ input:checked + .radio-newlycreated-button {
     margin: 40px 100px 40px 100px;
 }
 
+#booking-status-ticker {
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+    display: none;
+}
+
 .booking-attraction-container{
     /* border: 1px red solid; */
     margin: 30px 110px 40px 110px;
@@ -630,8 +636,12 @@ input:checked + .radio-newlycreated-button {
     position: absolute;
     /* top: 0; */
     right: 0;
-    background-color: rgba(0, 0, 0, 0);
     border: 0;
+    background-image: url("../static/images/icon_delete.png");
+    background-color: transparent;
+    background-size: 30px 30px;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .booking-data-container{
@@ -643,6 +653,10 @@ input:checked + .radio-newlycreated-button {
     /* border: 1px red solid; */
     line-height: 24px;
     margin-bottom: 15px;
+}
+
+.booking-data-container > div:first-child{
+    margin-bottom: 20px;
 }
 
 .booking-data-container > div:last-child{
@@ -673,8 +687,13 @@ input:checked + .radio-newlycreated-button {
 
 }
 
-.booking-button{
-    margin-top: 10px;
+.confirm-booking-button{
+    background-color: #448899;
+    padding: 10px 20px 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    border: 0;
+    border-radius: 5px;
 }
 
 #booking-form-id{
@@ -805,12 +824,6 @@ input:checked + .radio-newlycreated-button {
 
 .booking-text {
     margin: 40px 10px 40px 10px;
-}
-
-#booking-status-ticker {
-    margin: 10px 10px 10px 10px;
-    text-align: center;
-    display: none;
 }
 
 .booking-data-container {
