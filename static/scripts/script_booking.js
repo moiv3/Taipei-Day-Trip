@@ -130,7 +130,7 @@ async function initializeSignedInUserData(){
         }
     }
     else{
-        alert("Signed out!");
+        alert("尚未登入，即將重新導向至首頁！");
         window.location.pathname = "/";
     } 
 }
@@ -209,7 +209,6 @@ function addBookingButtonListener(){
         alert("感謝您的使用，已訂購完成！\n（請注意，此網站為教學用途，沒有實際交易行為。）")
     })
 }
-addBookingButtonListener();
 
 function addCreditCardInputFormatter(){
     // code from various websites and ChatGPT. very very clever...
