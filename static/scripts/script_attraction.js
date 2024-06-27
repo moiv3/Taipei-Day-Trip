@@ -1,14 +1,16 @@
 // Get attraction ID from the URL(window object)
-let pathName = window.location.pathname;
-let attractionID;
-match = pathName.match(/attraction\/(.+?)(\/)?$/); //把pathname /attraction之後的字串取出來放在match[1]
-console.log("Reading and matching URL by Regex:", match);
-if (match && match[1]){
-    attractionID = match[1];
-}
-else{
-    console.log("Attraction number from URL not found.");
-    window.location.pathname = "/";
+let attractionId;
+function getAttractionIdFromUrl(){
+    let pathName = window.location.pathname;
+    match = pathName.match(/attraction\/(.+?)(\/)?$/); //把pathname /attraction之後的字串取出來放在match[1]
+    console.log("Reading and matching URL by Regex:", match);
+    if (match && match[1]){
+        attractionId = match[1];
+    }
+    else{
+        console.log("Attraction number from URL not found.");
+        window.location.pathname = "/";
+    }
 }
 
 // Fetch any url and parse as json.
@@ -27,9 +29,9 @@ async function getAttractionData(url){
 }
 
 // Fetch and render content based on attraction ID + base URL.
-async function getAttractionPage(attractionID){
+async function getAttractionPage(attractionId){
     let attractionurlBase = "/api/attraction/";
-    response_json = await getAttractionData(attractionurlBase+attractionID);
+    response_json = await getAttractionData(attractionurlBase+attractionId);
     console.log("Obtained response:", response_json);
 
     // Error handling
@@ -212,11 +214,28 @@ function initializeTourPrice(){
     });    
 }
 
+// add booking button listener
+function addBookingButtonListener(tokenStatus){
+    const bookingButton = document.querySelector(".booking-button");
+    if (tokenStatus){
+        console.log("Added booking button event by token: book attraction");
+        bookingButton.addEventListener("click", bookAttraction);
+    }
+    // else activateCurtain2 defined in script_general.js
+    else{
+        console.log("Added booking button event by token: activate curtain");
+        bookingButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            activateCurtain2();
+        });
+    }
+}
+
 async function bookAttraction(event){
     event.preventDefault();
     // get the json from the fields in page
     let bookingData = {};
-    bookingData["attractionId"] = parseInt(attractionID);
+    bookingData["attractionId"] = parseInt(attractionId);
     bookingData["date"] = document.querySelector("#travel_date").value;
     bookingData["time"] = document.querySelector("input[name=timeslot]:checked").value;
     bookingData["price"] = parseInt(document.querySelector("#tour-price").textContent);
@@ -263,8 +282,8 @@ async function bookAttraction(event){
 }
 
 // Initialize Attraction Page DOM
-async function initializeAttraction(){
-    await getAttractionPage(attractionID);
+async function initializeAttraction(attractionId){
+    await getAttractionPage(attractionId);
     slideIndex = 0;
     showSlides(slideIndex);
 }
@@ -273,34 +292,21 @@ let slideIndex;
 // initializeAttraction();
 // initializeTourPrice();
 
-// test
+// 20240627 new initialize sequence (again...)
 
 function initializeSequenceAttraction(){
     addEventListener("DOMContentLoaded", async () => {
+        getAttractionIdFromUrl();
         const tokenStatus = await checkToken();
         console.log("After DOMContentLoaded, token status:", tokenStatus);
         // add correct button (signin or signout) to DOM and their event listeners
         initializeSignedInElementsNew(tokenStatus);
         addBookingButtonListener(tokenStatus);
-        await initializeAttraction();
+        await initializeAttraction(attractionId);
         initializeTourPrice();
     })
     // this space reserved for later
 }
 initializeSequenceAttraction();
 
-// add booking button listener
-function addBookingButtonListener(tokenStatus){
-    console.log("Signin status:", tokenStatus);
-    const bookingButton = document.querySelector(".booking-button");
-    if (tokenStatus){
-        bookingButton.addEventListener("click", bookAttraction);
-    }
-    // else activateCurtain2 defined in script_general.js
-    else{
-        bookingButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            activateCurtain2();
-        });
-    }
-}
+

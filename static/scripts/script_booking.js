@@ -170,7 +170,7 @@ async function deleteBooking(){
             headers: {Authorization: `Bearer ${signinStatusToken}`}
         });
         deleteStatusJson = await deleteStatus.json();
-        console.log(deleteStatusJson);
+        console.log("Response from server:", deleteStatusJson);
         if (deleteStatusJson.error){
             console.log("Delete unsuccessful, message:", deleteStatusJson.message);
             bookingStatusTicker = document.querySelector("#booking-status-ticker");
@@ -243,7 +243,7 @@ function initializeSequenceBooking(){
         const tokenStatus = await checkToken();
         console.log("After DOMContentLoaded, token status:", tokenStatus);
         initializeSignedInElementsNew(tokenStatus);
-        initializeSignedInUserDataNew(tokenStatus);
+        await initializeSignedInUserDataNew(tokenStatus);
         addBookingButtonListener();
         addCreditCardInputFormatter();
     })
