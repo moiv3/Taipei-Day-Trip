@@ -140,7 +140,7 @@ async function initializeSignedInUserDataNew(tokenStatus){
         }
     }
     else{
-        alert("尚未登入，即將重新導向至首頁！");
+        // alert("尚未登入，即將重新導向至首頁！");
         window.location.pathname = "/";
     } 
 }
