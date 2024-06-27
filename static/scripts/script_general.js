@@ -348,17 +348,17 @@ async function initializeSignedInElementsNew(tokenStatus){
     }
 }
 
-// Initialize sequence, wait for DOMContentLoaded event
-function initializeSequenceGeneral(){
-    addEventListener("DOMContentLoaded", () => {
-        // add correct button (signin or signout) to DOM and their event listeners
-        initializeSignedInElements();
-    })
-    // this space reserved for later
-}
+// Initialize sequence, wait for DOMContentLoaded event //20240627 deprecation test
+// function initializeSequenceGeneral(){
+//     addEventListener("DOMContentLoaded", () => {
+//         // add correct button (signin or signout) to DOM and their event listeners
+//         initializeSignedInElements();
+//     })
+//     // this space reserved for later
+// }
 // initializeSequenceGeneral();
 
-// test function: setCookie
+// test function: setCookie (This is for Week 5 discussion)
 // function setCookie(name, value, days) {
 //     let expires = "";
 //     if (days) {

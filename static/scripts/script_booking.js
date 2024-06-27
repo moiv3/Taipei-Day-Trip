@@ -3,7 +3,7 @@ function renderBookingData(bookingStatusJson){
 
     console.log("Rendering booking data...");
     if (!bookingStatusJson.data){
-        // alert("Fetched data says there is no booking!!!!!");        
+        // console.log("Fetched data says there is no booking!!!!!");        
         const bookingMainContainer = document.querySelector(".booking-main-container");
         const noBookingText = document.createElement("div");
         noBookingText.classList = "booking-text body gray-70";
@@ -16,15 +16,9 @@ function renderBookingData(bookingStatusJson){
         const bookingMainContainer = document.querySelector(".booking-main-container");
         const bookingAttractionContainer = document.createElement("div");
         bookingAttractionContainer.classList = "booking-attraction-container";
-        // bookingMainContainer.appendChild(bookingAttractionContainer);
         
         const bookingForm = document.querySelector("#booking-form-id");
         bookingMainContainer.insertBefore(bookingAttractionContainer, bookingForm);
-
-        // navbarElement = document.querySelector(".navbar-background")
-        // bodyElement = document.querySelector("body")
-        // bodyElement.insertBefore()
-        // bookingMainContainer.appendChild();
 
         // image
         const bookingAttractionImageContainer = document.createElement("div");
@@ -100,12 +94,9 @@ function renderBookingData(bookingStatusJson){
         bookingAttractionTextPriceOuter.appendChild(bookingAttractionTextPriceInner);
         bookingAttractionTextAddressOuter.appendChild(bookingAttractionTextAddressInner);
 
-        // append delete button
+        // append delete button (the image url is in CSS)
         const bookingAttractionDeleteIconContainer = document.createElement("button");
         bookingAttractionDeleteIconContainer.classList = "booking-attraction-delete-icon";
-        // const bookingAttractionDeleteIcon = document.createElement("img");
-        // bookingAttractionDeleteIcon.src = "../static/images/delete.png";
-        // bookingAttractionDeleteIconContainer.appendChild(bookingAttractionDeleteIcon);
         bookingAttractionDeleteIconContainer.addEventListener("click", deleteBooking);
         bookingAttractionContainer.appendChild(bookingAttractionDeleteIconContainer);
 
@@ -117,23 +108,23 @@ function renderBookingData(bookingStatusJson){
     }
 }
 
-// get signed in user data
-async function initializeSignedInUserData(){
-    signinData = await checkToken();
-    if (signinData){     
-        document.querySelector("#booking-name").textContent = signinData.name;
-        bookingStatusJson = await fetchBookingApi();
+// get signed in user data (20240627 deprecate test)
+// async function initializeSignedInUserData(){
+//     signinData = await checkToken();
+//     if (signinData){     
+//         document.querySelector("#booking-name").textContent = signinData.name;
+//         bookingStatusJson = await fetchBookingApi();
         
-        const renderResult = renderBookingData(bookingStatusJson);
-        if (renderResult){
-            document.querySelector("#booking-form-id").style.display = "block";
-        }
-    }
-    else{
-        alert("尚未登入，即將重新導向至首頁！");
-        window.location.pathname = "/";
-    } 
-}
+//         const renderResult = renderBookingData(bookingStatusJson);
+//         if (renderResult){
+//             document.querySelector("#booking-form-id").style.display = "block";
+//         }
+//     }
+//     else{
+//         alert("尚未登入，即將重新導向至首頁！");
+//         window.location.pathname = "/";
+//     } 
+// }
 
 // initializeSignedInUserData();
 
@@ -246,7 +237,6 @@ function addCreditCardInputFormatter(){
     // console.log(expiryValue);
 });
 }
-// addCreditCardInputFormatter();
 
 function initializeSequenceBooking(){
     addEventListener("DOMContentLoaded", async () => {

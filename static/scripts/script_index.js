@@ -257,13 +257,13 @@ async function initializePage(){
     }
 }
 
-// 20240613 test new initialize sequence
-async function initializeSequence(){
-    await initializePage();
-    await initializeHorizontalScroll();
-    initializeSearchBarListener();
-    initializeObserver();
-}
+// 20240613 test new initialize sequence 20240627 deprecation test
+// async function initializeSequence(){
+//     await initializePage();
+//     await initializeHorizontalScroll();
+//     initializeSearchBarListener();
+//     initializeObserver();
+// }
 
 // initializeSequence();
 
