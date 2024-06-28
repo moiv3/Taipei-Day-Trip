@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
   <title class="attraction-title">Attraction</title>
 </head>
 <body>
@@ -54,8 +54,14 @@
 
         <div><span class="order-details-form-subtitle">導覽費用：</span>新台幣 <span id="tour-price"></span> 元</div>
 
-        <button class="booking-button body white bold">開始預約行程
+        <div>
+          <button class="booking-button body white bold">開始預約行程</button>
+          <!-- 預定狀態指示用 -->
+          <span class="button bold cyan-70" id="booking-status-ticker"></span>   
+        </div>
         </form>
+
+   
     </div>
   </div>
   

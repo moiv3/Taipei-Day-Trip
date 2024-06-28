@@ -10,8 +10,13 @@ a {
 }
 
 .hr {
-    width: 100%;
+    width: calc(100% - 20px);
     border-top: 1px solid rgb(224, 224, 224);
+    margin: auto;
+}
+
+.hr.attraction-header-hr{
+    width: 100%;
 }
 
 button {
@@ -321,7 +326,7 @@ button {
     min-width: 0;
     bottom: 45px;
     text-align: center;
-    background-color: rgba(0,0,0,60%);
+    background-color: rgba(0, 0, 0, 60%);
     padding: 10px;
 }
 
@@ -342,7 +347,7 @@ button {
     width: 100%;
     min-width: 0;
     bottom:0;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     padding: 10px;
 }
 
@@ -568,6 +573,133 @@ input:checked + .radio-newlycreated-button {
     background-color: black;
 }
 
+/* booking page (購物車)相關 */
+
+.booking-main-container{
+    /* 有RWD設定，參見最下方 */
+    max-width: 1200px;
+    margin: 54px auto 0 auto; /* 54px navbar 40px margin */
+}
+
+.booking-headline{
+    margin: 94px 100px 0px 100px;
+}
+
+.booking-text{    
+    margin: 40px 100px 40px 100px;
+}
+
+#booking-status-ticker {
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+    display: none;
+}
+
+.booking-attraction-container{
+    /* border: 1px red solid; */
+    margin: 30px 110px 40px 110px;
+    display: flex;
+    position: relative;
+}
+
+.booking-attraction-image-container{    
+    height: 200px; /* take note of RWD below */
+    /* width: 100%; */
+    /* object-fit: cover; */
+    padding: 0 8px 0 8px;
+}
+
+.booking-attraction-image{    
+    height: 100%;
+    /* width: 100%; */
+    /* object-fit: cover; */
+    min-width: 0;
+}
+
+.booking-attraction-text{
+    padding: 0 0 0 22px;
+}
+
+.booking-attraction-text > div{
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+
+.booking-attraction-text > div:first-of-type{
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+
+.booking-attraction-delete-icon{
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    /* top: 0; */
+    right: 0;
+    border: 0;
+    background-image: url("../static/images/icon_delete.png");
+    background-color: transparent;
+    background-size: 30px 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.booking-data-container{
+    /* border: 1px red solid; */
+    margin: 40px 110px 40px 110px;
+}
+
+.booking-data-container > div{
+    /* border: 1px red solid; */
+    line-height: 24px;
+    margin-bottom: 15px;
+}
+
+.booking-data-container > div:first-child{
+    margin-bottom: 20px;
+}
+
+.booking-data-container > div:last-child{
+    margin-bottom: 0;
+}
+
+.booking-input {
+    box-sizing: border-box;
+    width: 200px;
+    height: 38px;
+    border: 1px solid #CCCCCC;
+    border-color: #E8E8E8;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    background-color: white;
+    font-size: 16px;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+.booking-confirm-container{
+    /* border: 1px red solid; */
+    margin: 40px 110px 40px 110px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content:flex-start;
+
+}
+
+.confirm-booking-button{
+    background-color: #448899;
+    padding: 10px 20px 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    border: 0;
+    border-radius: 5px;
+}
+
+#booking-form-id{
+    display: none;
+}
+
 /* footer區域 */
 .footer{
     height: 104px;
@@ -579,6 +711,11 @@ input:checked + .radio-newlycreated-button {
 }
 
 /* RWD使用 */
+@media screen and (min-width:1201px){
+.booking-attraction-delete-icon {
+    top: 0;
+}
+}
 
 @media screen and (max-width:1200px){
 .main-container{
@@ -598,6 +735,10 @@ input:checked + .radio-newlycreated-button {
 }
 
 .attraction-main-container{
+    max-width: 100%;
+}
+
+.booking-main-container{
     max-width: 100%;
 }
 
@@ -640,12 +781,57 @@ input:checked + .radio-newlycreated-button {
     margin-top: 20px;
 }
 
-.attraction-header-hr {
-    border-top: 0;
-}
-
 .attraction-content{
     padding: 10px 10px 10px 20px;
+}
+
+.booking-attraction-container{
+    /* border: 1px red solid; */
+    margin: 30px 10px 40px 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 30px;
+}
+
+.booking-attraction-image-container{    
+    /* border: 1px blue solid; */
+    padding: 0;
+}
+
+.booking-attraction-image{
+    width: 100%;
+    object-fit: cover;
+}
+
+.booking-attraction-text{   
+    /* border: 1px green solid; */
+    width: 100%;
+    padding: 0;
+}
+
+.booking-attraction-text > div:last-of-type{
+    margin-bottom: 30px;
+}
+
+.booking-attraction-delete-icon {
+    bottom: 0;
+}
+
+.booking-headline {
+    margin: 94px 10px 0 10px;
+}
+
+.booking-text {
+    margin: 40px 10px 40px 10px;
+}
+
+.booking-data-container {
+    margin: 40px 10px 40px 10px;
+}
+
+.booking-confirm-container {
+    margin: 40px 10px 40px 10px;
 }
 
 }
@@ -792,3 +978,4 @@ button {
     border: 1px solid #CCCCCC;
     border-radius: 6px;
 }
+
