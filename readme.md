@@ -41,6 +41,21 @@ attractionId: returns data for the requested attraction ID.
 
 output: {"data": list[Attractions]}
 
+### Users
+#### /api/user (method: POST)
+Creates a new user.
+
+Request body:
+{
+  "name": "Your Name Here",
+  "email": "your@email.net",
+  "password": "somepassword"
+}
+
+Output:
+Successful registration: server responses with {"ok": true}.
+Unsuccessful registration: server responses with {"error": true, "message": error message}.
+
 ## Development Notes
 
 ### Week 1

@@ -31,23 +31,27 @@
       <div class="hr"></div>
       <div class="booking-data-container">
         <div class="btn bold gray-70">您的聯絡資訊</div>
-        <div class="body gray-70">聯絡姓名：<input class="booking-input" type="text"></div>
-        <div class="body gray-70">聯絡信箱：<input class="booking-input" type="email"></div>
-        <div class="body gray-70">手機號碼：<input class="booking-input" type="text" pattern="[0-9]*" inputmode="numeric"></div>
+        <div class="body gray-70">聯絡姓名：<input class="booking-input" type="text" id="contact-name"></div>
+        <div class="body gray-70">聯絡信箱：<input class="booking-input" type="email" id="contact-email"></div>
+        <div class="body gray-70">手機號碼：<input class="booking-input" type="text"  id="contact-phone" pattern="[0-9]*" inputmode="numeric"></div>
         <div class="body bold gray-70">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
       </div>
       <div class="hr"></div>
       <div class="booking-data-container">
         <div class="btn bold gray-70">信用卡付款資訊</div>
-        <div class="body gray-70">卡片號碼：<input class="booking-input" id="credit-card-number" type="text" placeholder="**** **** **** ****" maxlength="19" pattern="[0-9]*" inputmode="numeric"></div>
+        <!-- <div class="body gray-70">卡片號碼：<input class="booking-input" id="credit-card-number" type="text" placeholder="**** **** **** ****" maxlength="19" pattern="[0-9]*" inputmode="numeric"></div>
         <div class="body gray-70">過期時間：<input class="booking-input" id="credit-card-expiry" type="text" placeholder="MM / YY" maxlength="5" pattern="[0-9]*" inputmode="numeric"></div>
-        <div class="body gray-70">驗證密碼：<input class="booking-input" id="credit-card-cvv" type="text" placeholder="CVV" maxlength="3" pattern="[0-9]*" inputmode="numeric"></div>
+        <div class="body gray-70">驗證密碼：<input class="booking-input" id="credit-card-cvv" type="text" placeholder="CVV" maxlength="3" pattern="[0-9]*" inputmode="numeric"></div> -->
+        <div class="tpfield-container body gray-70">卡片號碼：<div class="tpfield" id="card-number"></div></div>
+        <div class="tpfield-container body gray-70">過期時間：<div class="tpfield" id="card-expiration-date"></div></div>
+        <div class="tpfield-container body gray-70">驗證密碼：<div class="tpfield" id="card-ccv"></div></div>
       </div>
       <div class="hr"></div>    
 
       <div class="booking-confirm-container">
         <div class="body bold gray-70">總價：新台幣<span id="total-price">{price}</span>元</div>
         <button class="confirm-booking-button btn white" id="confirm-booking-button">確認訂購並付款</button>
+      <div class="button bold cyan-70" id="payment-status-ticker"></div>
       </div>
 
     </form>
@@ -56,5 +60,65 @@
   <div class="footer body bold">COPYRIGHT &copy; 2024 台北一日遊</div>
   <script src="../static/scripts/script_general.js"></script>
   <script src="../static/scripts/script_booking.js"></script>
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+  <script>
+      TPDirect.setupSDK(151714, 'app_2CCvt5vbLTGUYupnQzdVnZvWFMgE9si7VMEU1ruCaGpw1S7mXvM9rXSNKXE2', 'sandbox')
+      let fields = {
+        number: {
+            // css selector
+            element: '#card-number',
+            placeholder: '**** **** **** ****'
+        },
+        expirationDate: {
+            // DOM object
+            element: document.getElementById('card-expiration-date'),
+            placeholder: 'MM / YY'
+        },
+        ccv: {
+            element: '#card-ccv',
+            placeholder: 'CVV'
+        }
+      }
+      TPDirect.card.setup({
+          fields: fields,
+          styles: {
+              // Style all elements
+              'input': {
+                  'color': 'gray',
+              },
+              // Styling ccv field
+              'input.ccv': {
+                  // 'font-size': '16px'
+              },
+              // Styling expiration-date field
+              'input.expiration-date': {
+                  // 'font-size': '16px'
+              },
+              // Styling card-number field
+              'input.card-number': {
+                  // 'font-size': '16px'
+              },
+              // style focus state
+              ':focus': {
+                  // 'color': 'black'
+              },
+              // style valid state
+              '.valid': {
+                  'color': 'green'
+              },
+              // style invalid state
+              '.invalid': {
+                  'color': 'red'
+              },
+              // Media queries
+              // Note that these apply to the iframe, not the root window.
+              '@media screen and (max-width: 400px)': {
+                  'input': {
+                      'color': 'orange'
+                  }
+              }
+          }
+      })
+  </script>
 </body>
 </html>

@@ -595,6 +595,12 @@ input:checked + .radio-newlycreated-button {
     display: none;
 }
 
+#payment-status-ticker {
+    margin: 10px 10px 10px 10px;
+    text-align: right;
+    /* display: none; */
+}
+
 .booking-attraction-container{
     /* border: 1px red solid; */
     margin: 30px 110px 40px 110px;
@@ -979,3 +985,36 @@ button {
     border-radius: 6px;
 }
 
+.tpfield-container {
+    display: flex;
+    align-items: center;
+}
+
+.tpfield {
+    box-sizing: border-box;
+    width: 200px;
+    height: 38px;
+    border: 1px solid #CCCCCC;
+    border-color: #E8E8E8;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    background-color: white;
+    font-size: 16px;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+.thankyou-container {
+    padding: 0 20px;
+    /* border: 1px solid red; */
+    margin-top: 94px;
+    margin-bottom: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.thankyou-container > *{
+    line-height: 20px;    
+    margin-bottom: 24px;
+}
