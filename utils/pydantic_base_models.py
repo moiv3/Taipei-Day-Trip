@@ -76,3 +76,21 @@ class OrderData(BaseModel):
 class OrderFormData(BaseModel):
     prime: str # On prime length, TapPay spec says 71, but is actually 64, and the test prime is 69... leave as str for now
     order: OrderData
+
+class TappayResponse(BaseModel):
+    status: int
+    message: str
+
+class PlaceOrderData(BaseModel):
+    number: str
+    payment: TappayResponse
+
+class PlaceOrderResponse(BaseModel):
+    data: PlaceOrderData
+
+class GetOrderData(OrderData):
+    number: str
+    status: int
+
+class GetOrderResponse(BaseModel):
+    data: None | GetOrderData
