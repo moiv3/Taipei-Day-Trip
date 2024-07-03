@@ -233,7 +233,8 @@ function addBookingButtonListener(tokenStatus, bookingStatusJson){
         orderBody["order"]["contact"]["phone"] = document.querySelector("#contact-phone").value;
         console.log("orderBody before adding prime:", orderBody);
 
-
+        document.querySelector("#payment-status-ticker").textContent = "已傳送資訊至伺服器，請稍候...";
+        document.querySelector("#payment-status-ticker").style.display = "block";
         //TODO: 讓按鈕失效
 
         // callback => write in async?
@@ -272,9 +273,9 @@ function addBookingButtonListener(tokenStatus, bookingStatusJson){
 
             if (orderStatusJSON.data.payment.status === 0){
                 console.log("Payment succeeded, redirecting");
-                document.querySelector("#payment-status-ticker").textContent = "付款成功，即將重新導向...";
+                document.querySelector("#payment-status-ticker").textContent = "付款成功！即將重新導向...";
                 document.querySelector("#payment-status-ticker").style.display = "block";
-                setTimeout(() => window.location.href="../thankyou?number="+orderStatusJSON.data.number, 5000);
+                setTimeout(() => window.location.href="../thankyou?number="+orderStatusJSON.data.number, 3000);
             }
             else{
                 console.log("Payment unsuccessful"); // modify below time
