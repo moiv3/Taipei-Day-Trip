@@ -1004,11 +1004,20 @@ button {
 }
 
 .thankyou-container {
-    padding: 20px;
+    padding: 0 20px;
     /* border: 1px solid red; */
-    margin: 94px 100px 40px 100px;
+    margin-top: 94px;
+    margin-bottom: 40px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    
 }
+
+.thankyou-container > body{
+}
+
 .thankyou-container > *{
+    line-height: 20px;    
     margin-bottom: 24px;
 }
