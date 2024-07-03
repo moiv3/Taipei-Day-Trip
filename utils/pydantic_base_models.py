@@ -1,7 +1,7 @@
 from datetime import datetime, date
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Literal
-from annotated_types import MinLen
+from annotated_types import Len, MinLen
 
 class Error(BaseModel):
     error: bool
@@ -51,3 +51,28 @@ class BookingFormData(BaseModel):
     date: date
     time: Literal["morning", "afternoon"]
     price: int
+
+class AttractionData(BaseModel):
+    id: int 
+    name: Annotated[str, MinLen(1)]
+    address: Annotated[str, MinLen(1)]
+    image: Annotated[str, MinLen(1)]
+
+class ContactData(BaseModel):
+    name: Annotated[str, MinLen(1)]
+    email: EmailStr
+    phone: Annotated[str, MinLen(1)]
+
+class TripData(BaseModel):
+    attraction: AttractionData
+    date: date
+    time: Literal["morning", "afternoon"]
+
+class OrderData(BaseModel):
+    price: Literal[2000, 2500] # for future complicated prices, need to adjust this line
+    trip: TripData
+    contact: ContactData
+
+class OrderFormData(BaseModel):
+    prime: str # On prime length, TapPay spec says 71, but is actually 64, and the test prime is 69... leave as str for now
+    order: OrderData

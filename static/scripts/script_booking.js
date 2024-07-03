@@ -134,14 +134,19 @@ async function initializeSignedInUserDataNew(tokenStatus){
         document.querySelector("#booking-name").textContent = tokenStatus.name;
         bookingStatusJson = await fetchBookingApi();
         
-        const renderResult = renderBookingData(bookingStatusJson);
-        if (renderResult){
+        const renderResultBool = renderBookingData(bookingStatusJson);
+        if (renderResultBool){
             document.querySelector("#booking-form-id").style.display = "block";
+            return bookingStatusJson;
+        }
+        else {
+            return false;
         }
     }
     else{
         // alert("尚未登入，即將重新導向至首頁！");
         window.location.pathname = "/";
+        return false;
     } 
 }
 
@@ -192,13 +197,93 @@ async function deleteBooking(){
     }
 }
 
-function addBookingButtonListener(){
+
+// handle error when email is invalid
+function addBookingButtonListener(tokenStatus, bookingStatusJson){
+    console.log("Entered addBookingButtonListener");
+    console.log("Token:", tokenStatus);
+    console.log("Booking:", bookingStatusJson);
     const bookingButton = document.querySelector("#confirm-booking-button");
     bookingButton.addEventListener("click", (event) => {
         event.preventDefault();
-        console.log("Booking button clicked!");
-        alert("感謝您的使用，已訂購完成！\n（請注意，此網站為教學用途，沒有實際交易行為。）")
-    })
+        console.log("Booking button clicked! Front end validations");
+
+        if (!confirm("確定訂購此行程？")){
+            return;
+        }
+        else if(!validateContactInfo()){
+            console.log("Contact info validation unsuccessful");
+            document.querySelector("#payment-status-ticker").textContent = "聯絡資料格式有誤或空白，請確認填入資料";
+            document.querySelector("#payment-status-ticker").style.display = "block";
+            return;
+        }
+        
+        console.log("Booking:", bookingStatusJson);
+        let orderBodyOld = {};
+        orderBodyOld["order"] = {};
+        orderBodyOld["order"]["price"] = bookingStatusJson.data.price;
+        orderBodyOld["order"]["trip"] = bookingStatusJson.data;
+        // deep copy here, need to delete a key for API input spec
+        orderBody = JSON.parse(JSON.stringify(orderBodyOld));
+        delete orderBody["order"]["trip"]["price"];
+        console.log("New status of bookingStatusJson after Delete:", bookingStatusJson);
+        orderBody["order"]["contact"] = {};
+        orderBody["order"]["contact"]["name"] = document.querySelector("#contact-name").value;
+        orderBody["order"]["contact"]["email"] = document.querySelector("#contact-email").value;
+        orderBody["order"]["contact"]["phone"] = document.querySelector("#contact-phone").value;
+        console.log("orderBody before adding prime:", orderBody);
+
+
+        //TODO: 讓按鈕失效
+
+        // callback => write in async?
+        TPDirect.card.getPrime(async function(result) {
+            console.log(result);
+            if (result.status !== 0) {
+            console.error('getPrime error');
+            document.querySelector("#payment-status-ticker").textContent = "付款資料錯誤，請確認各欄位皆有填寫， 並檢查橘/紅色標記的資料";
+            document.querySelector("#payment-status-ticker").style.display = "block";
+            return;
+            }
+            let prime = result.card.prime;
+            console.log('getPrime success: ', prime);
+            orderBody["prime"] = prime;
+            // test for unsuccessful payment
+            // orderBody["prime"] = "974a642f39cd6d505a21e463e964f59484c16e506a9891b8bade8a30b29b6134";
+            console.log("即將送出orderBody:", orderBody);
+            let signinStatusToken = window.localStorage.getItem('token');
+            orderStatus = await fetch("./api/orders",{
+                method: "post",        
+                headers: {"Authorization": `Bearer ${signinStatusToken}`, "Content-Type": "application/json"},
+                body: JSON.stringify(orderBody),
+            });
+            orderStatusJSON = await orderStatus.json();
+            console.log("Got response from server:", orderStatusJSON);
+
+            // error handling here
+            // do front-end validation also!
+
+            if (orderStatusJSON.error){
+                console.log("Response unsuccessful", orderStatusJSON);
+                document.querySelector("#payment-status-ticker").textContent = "預定未成功，請確認已完整輸入資料，或重新整理後再試一次";
+                document.querySelector("#payment-status-ticker").style.display = "block";
+                return;
+            }
+
+            if (orderStatusJSON.data.payment.status === 0){
+                console.log("Payment succeeded, redirecting");
+                document.querySelector("#payment-status-ticker").textContent = "付款成功，即將重新導向...";
+                document.querySelector("#payment-status-ticker").style.display = "block";
+                setTimeout(() => window.location.href="../thankyou?number="+orderStatusJSON.data.number, 5000);
+            }
+            else{
+                console.log("Payment unsuccessful"); // modify below time
+                document.querySelector("#payment-status-ticker").textContent = "預定成功但付款失敗，請確認資料後再試一次，或聯繫客服進行付款。訂單編號：" + orderStatusJSON.data.number;
+                document.querySelector("#payment-status-ticker").style.display = "block";
+            }
+
+        });
+    });
 }
 
 function addCreditCardInputFormatter(){
@@ -237,15 +322,33 @@ function addCreditCardInputFormatter(){
     // console.log(expiryValue);
 });
 }
+function validateName(inputName) {
+    return inputName.trim().length >= 1;
+}
+
+function validateEmail(email) {
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    return emailRegex.test(email);
+}
+
+function validateContactInfo(){
+    contactName = document.querySelector("#contact-name").value;
+    contactEmail = document.querySelector("#contact-email").value;
+    contactPhone = document.querySelector("#contact-phone").value;
+    console.log("Name validation:", validateName(contactName));
+    console.log("Email validation:", validateEmail(contactEmail));
+    console.log("Phone validation:", validateName(contactPhone));
+    return (validateName(contactName) && validateEmail(contactEmail) && validateName(contactPhone));
+}
 
 function initializeSequenceBooking(){
     addEventListener("DOMContentLoaded", async () => {
         const tokenStatus = await checkToken();
         console.log("After DOMContentLoaded, token status:", tokenStatus);
         initializeSignedInElementsNew(tokenStatus);
-        await initializeSignedInUserDataNew(tokenStatus);
-        addBookingButtonListener();
-        addCreditCardInputFormatter();
+        const bookingStatusJson = await initializeSignedInUserDataNew(tokenStatus);
+        addBookingButtonListener(tokenStatus, bookingStatusJson);
+        // addCreditCardInputFormatter();
     })
     // this space reserved for later
 }
