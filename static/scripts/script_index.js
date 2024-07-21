@@ -24,7 +24,7 @@ async function fetchNewAttractions(page_input, keyword_input = null){
 }
 // 初始化橫向卷軸Horizontal scroll
 async function initializeHorizontalScroll(){
-    const response = await fetch("api/mrts");
+    const response = await fetch("api/mrts/");
     const response_json = await response.json();
     mrt_stations = response_json.data.length;
     console.log(`Fetched MRT station data. Data length: ${mrt_stations}. Response data below:`);
