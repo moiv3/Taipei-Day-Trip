@@ -103,6 +103,6 @@ A brief summary is also shown below:
 
 Updates and miscellaneous notes are logged and updated here.
 
-Currently there are no notes:)
+Currently there are no notes!
 
 Last updated on: 2024/09/18
