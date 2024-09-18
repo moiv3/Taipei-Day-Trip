@@ -1,89 +1,108 @@
-# WeHelp Stage2 Project
-## **This project is still in progress!!**
+# WeHelp Personal Project 1 - Taipei Day Trip
 
-This is the readme file for Brian's WeHelp Stage2 Project.
+Last updated on: 2024/09/18
 
-## Site description
+## Overview
 
-A e-commerce website for day trip packages.
+![img1_small](https://github.com/user-attachments/assets/c6351835-46dd-404e-b0af-99ccd034d12b) ![img2_small](https://github.com/user-attachments/assets/c67d3ab8-6b4a-4c20-af03-c9842f516eb1)
+
+Taipei Day Trip (url) is a E-commerce website for day trip packages.
+
+Using Python FastAPI as back-end, HTML / CSS / vanilla JS as front-end and MySQL as the database,\
+this website is deployed and hosted on AWS EC2.
+
+This is a portfolio project as part of the WeHelp Bootcamp Program.
+
+## Description
+
+Using this website, users can:
+1. Browse from a catalog of attractions.
+2. Search by keyword for attractions.
+3. Filter by MRT station by clicking on desired MRT station on the scroll bar.
+4. Read description and browse pictures of an attraction by clicking on desired attraction.
+
+By signing in to the website, in addition to the features above, users can now:
+1. Add tour packages to their shopping cart.
+2. Confirm and delete contents of the shopping cart.
+3. Pay by credit card to finalize the transaction.
+(Note: TapPay test environment is used, so no actual transaction is done.)
+
+## Architecture Diagram
+
+The figure below describes the architecture diagram of Taipei Day Trip.\
+It is a simple system using 1 AWS EC2 instance and MySQL installed directly in the instance.
+
+![TDT_architeture diagram](https://github.com/user-attachments/assets/5add17a8-8d57-44ec-8c4b-d8424c1e1396)
 
 ## APIs
 
-### MRT
-#### /api/mrts (method: GET)
+FastAPI auto-generated SwaggerUI API documentation can be accessed at /docs(url).
 
-input parameters: none. 
+A brief summary is also shown below:
 
-output: {"data": list[strings]}
+### MRT: For obtaining all Taipei MRT station data.
 
-Returns all MRT stations in the current database, sorted by number of nearby attractions (appearance frequency) in descending order.
+1. #### GET /api/mrts
+- Returns all MRT stations in the current database, sorted by number of nearby attractions (appearance frequency) in descending order.
 
+### Attractions: For obtaining all Taipei attraction data.
 
-### Attractions
-#### /api/attractions (method: GET)
+1. #### GET /api/attractions 
 
-input parameters(query string): 
+- Returns the Nth page of data matching the input page number and keyword(optional).
 
-1. page: returns the nth page of data matching the input page number.
-2. keyword: if used, returns data only if attraction name partially matches keyword or MRT station exactly matches keyword. if not used, returns all data.
+2. #### GET /api/attractions/{attractionId}
 
+- Returns attraction data by attraction ID.
 
-Returns attractions based on query strings.
+### Users: For user creation and authentication.
 
-Returns maximum of 12 Entries per page with page number starting from 0. 
+1. #### POST /api/user
 
-If there is a next page, page number of next page will also be returned as nextPage: next_page_number. If not, returns nextPage: null.
+- Creates a new user.
 
-#### /api/Attraction/{attractionId} (method: GET)
+2. #### PUT /api/user/auth
 
-input parameters(URL): 
-attractionId: returns data for the requested attraction ID.
+- Signs in a user to the system. Returns a JWT token if successfully signed-in.
 
-output: {"data": list[Attractions]}
+3. #### GET /api/user/auth
 
-### Users
-#### /api/user (method: POST)
-Creates a new user.
+- Verifies the JWT token for currently signed-in user.
+- Needs authorizaion (Required header: {Authorization: "Bearer ${JWT token}"}).
 
-Request body:
-{
-  "name": "Your Name Here",
-  "email": "your@email.net",
-  "password": "somepassword"
-}
+### Booking: For booking(shopping cart) management.
 
-Output:
-Successful registration: server responses with {"ok": true}.
-Unsuccessful registration: server responses with {"error": true, "message": error message}.
+1. #### GET /api/booking
+
+- Returns the user's current booking(shopping cart).
+- Needs authorizaion. 
+
+2. #### POST /api/booking
+
+- Adds an item to the user's booking(shopping cart).
+- Needs authorizaion. 
+
+3. #### DELETE /api/booking
+
+- Deletes the user's current booking(shopping cart).
+- Needs authorizaion. 
+
+### Order: For placing and checking status of orders.
+
+1. #### POST /api/orders
+
+- Places an order using order details and a TayPay prime. Returns the order number if successful.
+- Needs authorizaion. 
+
+2. #### GET /api/orders/{orderNumber}
+
+- Returns the order details and payment status of the provided order number.
+- Needs authorizaion. 
 
 ## Development Notes
 
-### Week 1
+Updates and miscellaneous notes are logged and updated here.
 
-#### 1. json parsing & Database Seeding
+Currently there are no notes:)
 
-A script json_to_database.py was written to parse provided json initial data and inserted into local database.
-
-The local database data was checked to be ok.
-
-The initial database was seeded with provided initial data. (To transfer local database data, the local database was dumped to a .sql file. The file was then transfered to the remote server, and finally imported to the remote database.)
-
-#### 2. API development
-
-This week 3 APIs are assigned.
-
-They are completed and logged to the API section above.
-
-#### 3. AWS deployment
-
-An AWS EC2 instance running ubuntu 24.04 was activated. It came preinstalled with python and git.
-
-Files in the repository (develop branch) were downloaded to the instance by git clone & git pull.
-
-Installed pip3, mySQL, FastAPI (including uvicorn), mysql-connector-python.
-
-An elastic IP was associated with the EC2 instance.
-
-The webapp was tested, then ran with nohup on.
-
-Submitted the PR for review. (2024/05/29)
+Last updated on: 2024/09/18
