@@ -1,13 +1,40 @@
-# WeHelp Stage2 Project
-## **This project is still in progress!!**
+# WeHelp Project - Taipei Day Trip
 
-This is the readme file for Brian's WeHelp Stage2 Project.
+## Overview
 
-## Site description
+(image1) (image2)
 
-A e-commerce website for day trip packages.
+Taipei Day Trip is a E-commerce website for day trip packages,\
+using Python FastAPI as back-end, HTML / CSS / vanilla JS as front-end and MySQL as the database.\
+the website is deployed and hosted on AWS EC2.
+
+This is a portfolio project as part of the WeHelp Bootcamp Program.
+
+## Description
+
+Using this website, users can:
+1. Browse from a catalog of attractions.
+2. Search by keyword for attractions.
+3. Filter by MRT station by clicking on desired MRT station on the scroll bar.
+4. Read description and browse pictures of an attraction by cliking on desired attraction.
+
+By signing in to the website, users can:
+1. Add tour packages to their shopping cart.
+2. Confirm and delete contents of the shopping cart.
+3. Pay by credit card to finalize the transaction.
+(Note: TapPay test environment is used, so no actual transaction is done.)
+
+## Architecture Diagram
+
+The figure below describes the architecture diagram of Taipei Day Trip.
+
+(figure)
 
 ## APIs
+
+FastAPI auto-generated SwaggerUI API documentation can be accessed at /docs.
+
+A brief summary is also shown below:
 
 ### MRT
 #### /api/mrts (method: GET)
@@ -58,74 +85,6 @@ Unsuccessful registration: server responses with {"error": true, "message": erro
 
 ## Development Notes
 
-### Week 1
+Updates and miscellaneous notes are logged and updated here.
 
-#### 1. json parsing & Database Seeding
-
-A script json_to_database.py was written to parse provided json initial data and inserted into local database.
-
-The local database data was checked to be ok.
-
-The initial database was seeded with provided initial data. (To transfer local database data, the local database was dumped to a .sql file. The file was then transfered to the remote server, and finally imported to the remote database.)
-
-#### 2. API development
-
-This week 3 APIs are assigned.
-
-They are completed and logged to the API section above.
-
-#### 3. AWS deployment
-
-An AWS EC2 instance running ubuntu 24.04 was activated. It came preinstalled with python and git.
-
-Files in the repository (develop branch) were downloaded to the instance by git clone & git pull.
-
-Installed pip3, mySQL, FastAPI (including uvicorn), mysql-connector-python.
-
-An elastic IP was associated with the EC2 instance.
-
-The webapp was tested, then ran with nohup on.
-
-Submitted the PR for review. (2024/05/29)
-
-## 2024/06/17
-New database
-Name/email/hashed_password
-
-CREATE TABLE member(
-id int not null auto_increment,
-user_id varchar(255) not null,
-email varchar(255) not null,
-hashed_password varchar(255) not null,
-PRIMARY KEY(id));
-ALTER TABLE member ADD name varchar(255) not null;
-ALTER TABLE member RENAME COLUMN user_id to username;
-
-mysql> desc member;
-+-----------------+--------------+------+-----+---------+----------------+
-| Field           | Type         | Null | Key | Default | Extra          |
-+-----------------+--------------+------+-----+---------+----------------+
-| id              | int          | NO   | PRI | NULL    | auto_increment |
-| username        | varchar(255) | NO   |     | NULL    |                |
-| email           | varchar(255) | NO   |     | NULL    |                |
-| hashed_password | varchar(255) | NO   |     | NULL    |                |
-| name            | varchar(255) | NO   |     | NULL    |                |
-+-----------------+--------------+------+-----+---------+----------------+
-5 rows in set (0.01 sec)
-
-mysql> show create table member;
-+--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table  | Create Table
-
-                                                                                |
-+--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| member | CREATE TABLE `member` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `hashed_password` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
-+--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
+Currently there are no notes:)
